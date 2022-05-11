@@ -36,8 +36,11 @@ public class FilmController {
         if(film.getDescription().length()>200) {
             throw new ValidationException("Максимальная длина описания — 200 символов.");
         }
+        if(film.getDescription() == null || film.getDescription().isEmpty()) {
+            throw new ValidationException("Описание фильма совершенно пустое!");
+        }
         if(film.getReleaseDate().isBefore(cinemaBirthday)) {
-            throw new ValidationException("Максимальная длина описания — 200 символов.");
+            throw new ValidationException("Дата производства фильма до дня рождения кино!");
         }
         if(film.getDuration().isNegative()||film.getDuration().isZero()) {
             throw new ValidationException("Продолжительность фильма должна быть больше 0");
