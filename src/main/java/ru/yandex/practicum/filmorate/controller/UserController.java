@@ -2,11 +2,11 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,40 +25,59 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) {
-        log.debug("Получен POST запрос на /users");
-        if(user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new ValidationException("Адрес электронной почты не может быть пустым.");
-        }
-        if(!user.getEmail().contains("@")) {
-            throw new ValidationException("Адрес электронной почты не может быть без символа @.");
-        }
-        if(users.containsKey(user.getEmail())) {
-            throw new ValidationException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
-        }
-        if(user.getLogin() == null ||  user.getLogin().isEmpty()) {
-            throw new ValidationException("Логин не может быть пустым.");
-        }
-        if(user.getLogin().contains(" ")) {
-            throw new ValidationException("Логин не может содержать пробелы.");
-        }
-        if(user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Логин не может содержать пробелы.");
-        }
-        if(user.getName() == null ||  user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-        }
+            log.debug("Получен POST запрос на /users");
+            if (user.getEmail() == null || user.getEmail().isBlank()) {
+                throw new ValidationException("Адрес электронной почты не может быть пустым.");
+            }
+            if (!user.getEmail().contains("@")) {
+                throw new ValidationException("Адрес электронной почты не может быть без символа @.");
+            }
+            if (users.containsKey(user.getEmail())) {
+                throw new ValidationException("Пользователь с электронной почтой " +
+                        user.getEmail() + " уже зарегистрирован.");
+            }
+            if (user.getLogin() == null || user.getLogin().isEmpty()) {
+                throw new ValidationException("Логин не может быть пустым.");
+            }
+            if (user.getLogin().contains(" ")) {
+                throw new ValidationException("Логин не может содержать пробелы.");
+            }
+            if (user.getBirthday().isAfter(LocalDate.now())) {
+                throw new ValidationException("Логин не может содержать пробелы.");
+            }
+            if (user.getName() == null || user.getName().isEmpty()) {
+                user.setName(user.getLogin());
+            }
         users.put(user.getId(), user);
         return user;
     }
 
     @PutMapping
     public User put(@RequestBody User user) {
-        log.debug("Получен PUT запрос на /users");
-        if(user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new ValidationException("Адрес электронной почты не может быть пустым.");
-        }
-        users.put(user.getId(), user);
-        return user;
+            log.debug("Получен PUT запрос на /users");
+            if (user.getEmail() == null || user.getEmail().isBlank()) {
+                throw new ValidationException("Адрес электронной почты не может быть пустым.");
+            }
+            if (!user.getEmail().contains("@")) {
+                throw new ValidationException("Адрес электронной почты не может быть без символа @.");
+            }
+            if (users.containsKey(user.getEmail())) {
+                throw new ValidationException("Пользователь с электронной почтой " +
+                        user.getEmail() + " уже зарегистрирован.");
+            }
+            if (user.getLogin() == null || user.getLogin().isEmpty()) {
+                throw new ValidationException("Логин не может быть пустым.");
+            }
+            if (user.getLogin().contains(" ")) {
+                throw new ValidationException("Логин не может содержать пробелы.");
+            }
+            if (user.getBirthday().isAfter(LocalDate.now())) {
+                throw new ValidationException("Логин не может содержать пробелы.");
+            }
+            if (user.getName() == null || user.getName().isEmpty()) {
+                user.setName(user.getLogin());
+            }
+            users.put(user.getId(), user);
+            return user;
     }
 }

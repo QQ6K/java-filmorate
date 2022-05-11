@@ -23,27 +23,32 @@ public class FilmController {
 
     @GetMapping
     public Collection<Film> findAll() {
-        log.debug("Получен GET запрос на /films");
+        log.info("Получен GET запрос на /films");
         return films.values();
     }
 
     @PostMapping
     public Film create(@RequestBody Film film) {
-        log.debug("Получен POST запрос на /films");
-        if(film.getName() == null || film.getName().isBlank()) {
-            throw new ValidationException("Название фильма не может быть пустым.");
+        try {
+            log.info("Получен POST запрос на /films");
+            if (film.getName() == null || film.getName().isBlank()) {
+                throw new ValidationException("Название фильма не может быть пустым.");
+            }
+            if (film.getDescription().length() > 200) {
+                throw new ValidationException("Максимальная длина описания — 200 символов.");
+            }
+            if (film.getDescription() == null || film.getDescription().isEmpty()) {
+                throw new ValidationException("Описание фильма совершенно пустое!");
+            }
+            if (film.getReleaseDate().isBefore(cinemaBirthday)) {
+                throw new ValidationException("Дата производства фильма до дня рождения кино!");
+            }
+            if (film.getDuration().isNegative() || film.getDuration().isZero()) {
+                throw new ValidationException("Продолжительность фильма должна быть больше 0");
+            }
         }
-        if(film.getDescription().length()>200) {
-            throw new ValidationException("Максимальная длина описания — 200 символов.");
-        }
-        if(film.getDescription() == null || film.getDescription().isEmpty()) {
-            throw new ValidationException("Описание фильма совершенно пустое!");
-        }
-        if(film.getReleaseDate().isBefore(cinemaBirthday)) {
-            throw new ValidationException("Дата производства фильма до дня рождения кино!");
-        }
-        if(film.getDuration().isNegative()||film.getDuration().isZero()) {
-            throw new ValidationException("Продолжительность фильма должна быть больше 0");
+        catch (ValidationException e){
+            log.info(e.getMessage());
         }
         films.put(film.getId(), film);
         return film;
@@ -51,7 +56,22 @@ public class FilmController {
 
     @PutMapping
     public Film put(@RequestBody Film film) {
-        log.debug("Получен PUT запрос на /films");
+        log.info("Получен PUT запрос на /films");
+            if (film.getName() == null || film.getName().isBlank()) {
+                throw new ValidationException("Название фильма не может быть пустым.");
+            }
+            if (film.getDescription().length() > 200) {
+                throw new ValidationException("Максимальная длина описания — 200 символов.");
+            }
+            if (film.getDescription() == null || film.getDescription().isEmpty()) {
+                throw new ValidationException("Описание фильма совершенно пустое!");
+            }
+            if (film.getReleaseDate().isBefore(cinemaBirthday)) {
+                throw new ValidationException("Дата производства фильма до дня рождения кино!");
+            }
+            if (film.getDuration().isNegative() || film.getDuration().isZero()) {
+                throw new ValidationException("Продолжительность фильма должна быть больше 0");
+            }
         films.put(film.getId(), film);
         return film;
     }
