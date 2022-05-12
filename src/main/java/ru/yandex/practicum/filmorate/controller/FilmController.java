@@ -75,6 +75,6 @@ public class FilmController {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleException(ValidationException e){
-        log.debug(e.getMessage());
+        log.info(e.getMessage());
     }
 }

@@ -26,7 +26,7 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) {
-            log.debug("Получен POST запрос на /users");
+            log.info("Получен POST запрос на /users");
             if (user.getEmail() == null || user.getEmail().isBlank()) {
                 throw new ValidationException("Адрес электронной почты не может быть пустым.");
             }
@@ -55,7 +55,7 @@ public class UserController {
 
     @PutMapping
     public User put(@RequestBody User user) {
-            log.debug("Получен PUT запрос на /users");
+            log.info("Получен PUT запрос на /users");
             if (user.getEmail() == null || user.getEmail().isBlank()) {
                 throw new ValidationException("Адрес электронной почты не может быть пустым.");
             }
@@ -85,6 +85,6 @@ public class UserController {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleException(ValidationException e){
-        log.debug(e.getMessage());
+        log.info(e.getMessage());
     }
 }
