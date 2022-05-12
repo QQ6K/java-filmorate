@@ -44,10 +44,11 @@ public class UserController {
                 throw new ValidationException("Логин не может содержать пробелы.");
             }
             if (user.getBirthday().isAfter(LocalDate.now())) {
-                throw new ValidationException("Логин не может содержать пробелы.");
+                throw new ValidationException("Дата рождения не может быть больше текущей.");
             }
             if (user.getName() == null || user.getName().isEmpty()) {
                 user.setName(user.getLogin());
+                log.info("Имя было пустым, мы приняли волевое решение использовать логин!");
             }
         users.put(user.getId(), user);
         return user;

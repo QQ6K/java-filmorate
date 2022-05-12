@@ -20,4 +20,15 @@ public class Film {
         this.releaseDate = releaseDate;
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id:" + id +
+                ", name:'" + name + '\'' +
+                ", description:'" + description + '\'' +
+                ", releaseDate:" + releaseDate +
+                ", duration:" + duration +
+                '}';
+    }
 }
