@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -29,7 +30,6 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) {
-        try {
             log.info("Получен POST запрос на /films");
             if (film.getName() == null || film.getName().isBlank()) {
                 throw new ValidationException("Название фильма не может быть пустым.");
@@ -46,10 +46,6 @@ public class FilmController {
             if (film.getDuration().isNegative() || film.getDuration().isZero()) {
                 throw new ValidationException("Продолжительность фильма должна быть больше 0");
             }
-        }
-        catch (ValidationException e){
-            log.info(e.getMessage());
-        }
         films.put(film.getId(), film);
         return film;
     }
@@ -74,5 +70,11 @@ public class FilmController {
             }
         films.put(film.getId(), film);
         return film;
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleException(ValidationException e){
+        log.debug(e.getMessage());
     }
 }
