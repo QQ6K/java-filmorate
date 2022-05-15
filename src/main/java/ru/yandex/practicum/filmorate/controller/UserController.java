@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.utilities.Validator;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -26,7 +25,11 @@ public class UserController {
     @PostMapping
     public User create(@RequestBody User user) {
         log.info("Получен POST запрос на /users");
-        Validator.userValidate(user,users);
+        if (users.containsKey(user.getEmail())) {
+            throw new ValidationException("Пользователь с электронной почтой " +
+                    user.getEmail() + " уже зарегистрирован.");
+        }
+        Validator.userValidate(user);
         users.put(user.getId(), user);
         return user;
     }
@@ -34,7 +37,11 @@ public class UserController {
     @PutMapping
     public User put(@RequestBody User user) {
         log.info("Получен PUT запрос на /users");
-        Validator.userValidate(user,users);
+        if (users.containsKey(user.getEmail())) {
+            throw new ValidationException("Пользователь с электронной почтой " +
+                    user.getEmail() + " уже зарегистрирован.");
+        }
+        Validator.userValidate(user);
         users.put(user.getId(), user);
         return user;
     }

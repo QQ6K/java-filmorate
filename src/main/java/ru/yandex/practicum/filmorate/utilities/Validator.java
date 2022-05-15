@@ -10,18 +10,14 @@ import java.util.HashMap;
 
 @Slf4j
 public class Validator {
-    private static LocalDate cinemaBirthday = LocalDate.of(1895, 12, 28);
+    private static final LocalDate cinemaBirthday = LocalDate.of(1895, 12, 28);
 
-    public static void userValidate(User user, HashMap users) {
+    public static void userValidate(User user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new ValidationException("Адрес электронной почты не может быть пустым.");
         }
         if (!user.getEmail().contains("@")) {
             throw new ValidationException("Адрес электронной почты не может быть без символа @.");
-        }
-        if (users.containsKey(user.getEmail())) {
-            throw new ValidationException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
         }
         if (user.getLogin() == null || user.getLogin().isEmpty()) {
             throw new ValidationException("Логин не может быть пустым.");
