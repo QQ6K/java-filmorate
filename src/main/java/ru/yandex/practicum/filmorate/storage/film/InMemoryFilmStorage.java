@@ -1,41 +1,41 @@
-package ru.yandex.practicum.filmorate.controller;
+package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequestMapping("/films")
 @Slf4j
 @RestController
-public class FilmController {
-private final FilmService filmService;
+@Component
+public class InMemoryFilmStorage implements FilmStorage {
+    private final Map<Integer, Film> films = new HashMap<>();
 
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
+    public Map<Integer, Film> getFilms() {
+        return films;
     }
 
-    @GetMapping
     public Collection<Film> findAll() {
-        log.info("Получен GET запрос на /films");
-        return filmService.getFilmStorage().findAll();
+       return films.values();
     }
 
-    @PostMapping
     public Film create(@RequestBody Film film) {
-        log.info("Получен POST запрос на /films");
-        filmService.getFilmStorage().put(film);
+        Validator.filmValidate(film);
+        films.put(film.getId(), film);
         return film;
     }
 
-    @PutMapping
     public Film put(@RequestBody Film film) {
-        log.info("Получен PUT запрос на /films");
-        filmService.getFilmStorage().put(film);
+        Validator.filmValidate(film);
+        films.put(film.getId(), film);
         return film;
     }
 

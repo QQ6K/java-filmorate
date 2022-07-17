@@ -5,44 +5,40 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.util.Collection;
-import java.util.HashMap;
 
-@Slf4j
-@RestController
 @RequestMapping("/users")
+@RestController
+@Slf4j
 public class UserController {
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public Collection<User> findAll() {
         log.debug("Получен GET запрос на /users");
-        return users.values();
+        return userService.getUserStorage().findAll();
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
         log.info("Получен POST запрос на /users");
-        if (users.containsKey(user.getEmail())) {
-            throw new ValidationException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
-        }
         Validator.userValidate(user);
-        users.put(user.getId(), user);
+        userService.getUserStorage().create(user);
         return user;
     }
 
     @PutMapping
     public User put(@RequestBody User user) {
         log.info("Получен PUT запрос на /users");
-        if (users.containsKey(user.getEmail())) {
-            throw new ValidationException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
-        }
         Validator.userValidate(user);
-        users.put(user.getId(), user);
+        userService.getUserStorage().put(user);
         return user;
     }
 

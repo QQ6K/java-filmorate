@@ -35,7 +35,7 @@ public class UserControllerTest {
     @Test
     void createValidUserResponseShouldBeOkTest() throws Exception {
         User user = new User(1, "test@test.ru",
-                "test", "Stephan", LocalDate.of(2000,11,11));
+                "test", "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -49,7 +49,7 @@ public class UserControllerTest {
     @Test
     void createUserEmailWithoutAtTest() throws Exception {
         User user = new User(1, "test.ru",
-                "test", "Stephan", LocalDate.of(2000,11,11));
+                "test", "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -61,7 +61,7 @@ public class UserControllerTest {
     @Test
     void createUserEmailEmptyTest() throws Exception {
         User user = new User(1, "",
-                "test", "Stephan", LocalDate.of(2000,11,11));
+                "test", "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -73,7 +73,7 @@ public class UserControllerTest {
     @Test
     void createUserEmailNullTest() throws Exception {
         User user = new User(1, null,
-                "test", "Stephan", LocalDate.of(2000,11,11));
+                "test", "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -85,7 +85,7 @@ public class UserControllerTest {
     @Test
     void createUserLoginEmptyTest() throws Exception {
         User user = new User(1, "test@test.ru",
-                "", "Stephan", LocalDate.of(2000,11,11));
+                "", "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -97,7 +97,7 @@ public class UserControllerTest {
     @Test
     void createUserLoginNullTest() throws Exception {
         User user = new User(1, "test@test.ru",
-                null, "Stephan", LocalDate.of(2000,11,11));
+                null, "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -109,7 +109,7 @@ public class UserControllerTest {
     @Test
     void createUserLoginWithSpaceTest() throws Exception {
         User user = new User(1, "test@test.ru",
-                "T shirt", "Stephan", LocalDate.of(2000,11,11));
+                "T shirt", "Stephan", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -121,7 +121,7 @@ public class UserControllerTest {
     @Test
     void createUserLoginNameTest() throws Exception {
         User user = new User(2, "test@test.ru",
-                "Tshirt", "", LocalDate.of(2000,11,11));
+                "Tshirt", "", LocalDate.of(2000,11,11), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -133,7 +133,7 @@ public class UserControllerTest {
     @Test
     void createUserBirthdayTest() throws Exception {
         User user = new User(1, "test@test.ru",
-                "Tshirt", "Георгий", LocalDate.now().plusDays(1));
+                "Tshirt", "Георгий", LocalDate.now().plusDays(1), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
                 .content(body)
@@ -145,7 +145,7 @@ public class UserControllerTest {
     @Test
     void createUserPutTest() throws Exception {
         User user = new User(3, "test@test.ru",
-                "Tshirt", "Георгий", LocalDate.now().minusDays(1));
+                "Tshirt", "Георгий", LocalDate.now().minusDays(1), null);
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.put("/users")
                 .content(body)
