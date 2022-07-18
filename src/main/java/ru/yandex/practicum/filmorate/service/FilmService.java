@@ -43,7 +43,8 @@ public class FilmService {
     }
 
     @GetMapping("/films/popular?count={count}")
-    public Film getOtherUserFriends(@RequestBody Film film, @PathVariable int count){
+    public Film getPopular(@RequestBody Film film, @PathVariable int count){
+        filmStorage.findPopular(count);
         return film;
     }
 

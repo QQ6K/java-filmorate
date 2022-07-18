@@ -18,6 +18,10 @@ import java.util.HashMap;
 public class InMemoryUserStorage implements UserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
 
+    public HashMap<Integer, User> getUsers() {
+        return users;
+    }
+
     public Collection<User> findAll() {
         return users.values();
     }
