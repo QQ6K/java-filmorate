@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,27 +27,28 @@ public class UserService {
         return userStorage;
     }
 
-    @PutMapping("/users/{id}/friends/{friendId}")
-    public User AddToFriends(@RequestBody User user, @PathVariable int id, @PathVariable Long friendId){
+    public User AddToFriends(int id, Long friendId){
         userStorage.getUsers().get(id).addFriend(friendId);
         userStorage.getUsers().get(friendId).addFriend((long) id);
-        return user;
+        return userStorage.getUsers().get(id);
     }
 
-    @DeleteMapping("/users/{id}/friends/{friendId}")
-    public User DeleteFromFriends(@RequestBody User user, @PathVariable int id, @PathVariable Long friendId){
+    public User DeleteFromFriends(int id, Long friendId){
         userStorage.getUsers().get(id).deleteFriend(friendId);
         userStorage.getUsers().get(friendId).addFriend((long) id);
-        return user;
+        return userStorage.getUsers().get(id);
     }
 
-    @GetMapping("/users/{id}/friends")
-    public Set<Long> getAllFriends(@PathVariable int id){
-        return userStorage.getUsers().get(id).getFriends();
+    public List<User> getAllFriends(int id){
+        List friends = new ArrayList<>();
+        for (long i: userStorage.getUsers().get(id).getFriends()){
+            friends.add(userStorage.getUsers().get(id));
+        }
+        return friends;
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public ArrayList<Long> getOtherUserFriends(@PathVariable int id, @PathVariable int otherId){
+    public ArrayList<Long> getMutualFriends(@PathVariable int id, @PathVariable int otherId){
         ArrayList<Long> mutualFriends = new ArrayList<>();
         for (Long i: userStorage.getUsers().get(id).getFriends()){
             for (Long j: userStorage.getUsers().get(otherId).getFriends()){

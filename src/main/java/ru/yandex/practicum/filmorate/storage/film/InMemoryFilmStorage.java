@@ -26,13 +26,13 @@ public class InMemoryFilmStorage implements FilmStorage {
        return films.values();
     }
 
-    public Film create(@RequestBody Film film) {
+    public Film create(Film film) {
         Validator.filmValidate(film);
         films.put(film.getId(), film);
         return film;
     }
 
-    public Film put(@RequestBody Film film) {
+    public Film put(Film film) {
         Validator.filmValidate(film);
         films.put(film.getId(), film);
         return film;

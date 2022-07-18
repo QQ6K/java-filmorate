@@ -26,7 +26,7 @@ public class InMemoryUserStorage implements UserStorage {
         return users.values();
     }
 
-    public User create(@RequestBody User user) {
+    public User create(User user) {
         if (users.containsKey(user.getEmail())) {
             throw new ValidationException("Пользователь с электронной почтой " +
                     user.getEmail() + " уже зарегистрирован.");
@@ -36,7 +36,7 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
-    public User put(@RequestBody User user) {
+    public User put(User user) {
         if (users.containsKey(user.getEmail())) {
             throw new ValidationException("Пользователь с электронной почтой " +
                     user.getEmail() + " уже зарегистрирован.");

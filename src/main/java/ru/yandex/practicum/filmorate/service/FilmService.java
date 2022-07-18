@@ -10,6 +10,8 @@ import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
+import java.util.List;
+
 @Service
 public class FilmService {
 
@@ -30,22 +32,19 @@ public class FilmService {
         return userStorage;
     }
 
-    @PutMapping("/films/{id}/like/{userId}")
-    public Film addLikeToFilm(@RequestBody Film film, @PathVariable int id, @PathVariable Long userId){
+    public Film addLikeToFilm(int id, Long userId){
         filmStorage.getFilms().get(id).addLike(userId);
-        return film;
+        return filmStorage.getFilms().get(id);
     }
 
-    @DeleteMapping("/films/{id}/like/{userId}")
-    public Film getAllFriends(@RequestBody Film film, @PathVariable int id, @PathVariable Long userId){
+    public Film deleteLikeFromFilm(int id, Long userId){
         filmStorage.getFilms().get(id).deleteLike(userId);
-        return film;
+        return filmStorage.getFilms().get(id);
     }
 
-    @GetMapping("/films/popular?count={count}")
-    public Film getPopular(@RequestBody Film film, @PathVariable int count){
-        filmStorage.findPopular(count);
-        return film;
+
+    public List<Film> getPopular(int count){
+        return filmStorage.findPopular(count);
     }
 
 }
