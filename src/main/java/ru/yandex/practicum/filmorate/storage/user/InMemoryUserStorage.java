@@ -11,12 +11,15 @@ import ru.yandex.practicum.filmorate.utilities.Validator;
 import java.util.Collection;
 import java.util.HashMap;
 
-@RequestMapping("/users")
-@RestController
 @Component
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
+    private static Integer globalId = 0;
+
+    private static Integer getNextId() {
+        return globalId++;
+    }
 
     public HashMap<Integer, User> getUsers() {
         return users;
@@ -32,6 +35,7 @@ public class InMemoryUserStorage implements UserStorage {
                     user.getEmail() + " уже зарегистрирован.");
         }
         Validator.userValidate(user);
+        user.setId(getNextId());
         users.put(user.getId(), user);
         return user;
     }

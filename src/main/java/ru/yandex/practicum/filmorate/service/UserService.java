@@ -47,8 +47,7 @@ public class UserService {
         return friends;
     }
 
-    @GetMapping("/users/{id}/friends/common/{otherId}")
-    public ArrayList<Long> getMutualFriends(@PathVariable int id, @PathVariable int otherId){
+       public ArrayList<Long> getMutualFriends(int id, int otherId){
         ArrayList<Long> mutualFriends = new ArrayList<>();
         for (Long i: userStorage.getUsers().get(id).getFriends()){
             for (Long j: userStorage.getUsers().get(otherId).getFriends()){
@@ -59,4 +58,6 @@ public class UserService {
         }
         return mutualFriends;
     }
+
+
 }
