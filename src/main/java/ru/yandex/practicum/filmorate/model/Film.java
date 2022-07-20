@@ -9,20 +9,22 @@ import java.util.Set;
 
 @Data
 public class Film {
-    private final int id;
+    private int id;
     private String name;
     private String description;
     private LocalDate releaseDate;
-    private Duration duration;
+    private int duration;
     private Set<Long> likes;
+    private int rate;
 
-    public Film(int id, String name, String description, LocalDate releaseDate, Duration duration, HashSet<Long> likes) {
+    public Film(int id, String name, String description, LocalDate releaseDate, int duration, int rate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.likes = likes;
+        this.rate = rate;
     }
 
     public void addLike(Long id) {

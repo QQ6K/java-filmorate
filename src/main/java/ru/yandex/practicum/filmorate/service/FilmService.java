@@ -16,21 +16,16 @@ import java.util.List;
 public class FilmService {
 
     private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(InMemoryFilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(InMemoryFilmStorage filmStorage) {
         this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
     }
 
     public FilmStorage getFilmStorage() {
         return filmStorage;
     }
 
-    public UserStorage getUserStorage() {
-        return userStorage;
-    }
 
     public Film addLikeToFilm(int id, Long userId){
         filmStorage.getFilms().get(id).addLike(userId);

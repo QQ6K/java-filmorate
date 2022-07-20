@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@RequestMapping("/users")
 @RestController
 @Slf4j
 public class UserController {
@@ -24,13 +23,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public Collection<User> findAll() {
         log.debug("Получен GET запрос на /users");
         return userService.getUserStorage().findAll();
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public User create(@RequestBody User user) {
         log.info("Получен POST запрос на /users");
         Validator.userValidate(user);
@@ -38,12 +37,18 @@ public class UserController {
         return user;
     }
 
-    @PutMapping
+    @PutMapping("/users")
     public User put(@RequestBody User user) {
         log.info("Получен PUT запрос на /users");
         Validator.userValidate(user);
         userService.getUserStorage().put(user);
         return user;
+    }
+
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable int id){
+        log.info("Получен GET запрос на /users/id");
+        return userService.getUser(id);
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")

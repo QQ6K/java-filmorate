@@ -27,6 +27,10 @@ public class UserService {
         return userStorage;
     }
 
+    public User getUser(int id){
+        return userStorage.getUser(id);
+    }
+
     public User AddToFriends(int id, Long friendId){
         userStorage.getUsers().get(id).addFriend(friendId);
         userStorage.getUsers().get(friendId).addFriend((long) id);

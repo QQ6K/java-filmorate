@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -9,15 +10,18 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@RequestMapping("/films")
 @Slf4j
-@RestController
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
+    private  int globalId = 0;
 
+    @Autowired
+    private int getNextId() {
+        log.info(String.valueOf(globalId));
+        return globalId++;
+    }
     public Map<Integer, Film> getFilms() {
         return films;
     }
@@ -28,6 +32,8 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     public Film create(Film film) {
         Validator.filmValidate(film);
+        film.setId(getNextId());
+        log.info(String.valueOf(globalId));
         films.put(film.getId(), film);
         return film;
     }

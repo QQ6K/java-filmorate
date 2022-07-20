@@ -30,7 +30,7 @@ private final FilmService filmService;
     @PostMapping
     public Film create(@RequestBody Film film) {
         log.info("Получен POST запрос на /films");
-        filmService.getFilmStorage().put(film);
+        filmService.getFilmStorage().create(film);
         return film;
     }
 
