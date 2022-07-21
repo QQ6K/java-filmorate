@@ -13,4 +13,6 @@ public interface UserStorage {
     public Collection<User> findAll();
     public User create(User user);
     public User put(User user);
+    public void addToFriends(int id, Long friendId);
+    public void removeFromFriends(int id, Long friendId);
 }

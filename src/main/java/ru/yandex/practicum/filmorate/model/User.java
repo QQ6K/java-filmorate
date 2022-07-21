@@ -26,12 +26,4 @@ public class User {
         this.birthday = birthday;
         this.friends = new HashSet();
     }
-
-    public void addFriend(Long id) {
-        this.friends.add(id);
-    }
-
-    public void deleteFriend(Long id) {
-        this.friends.remove(id);
-    }
 }

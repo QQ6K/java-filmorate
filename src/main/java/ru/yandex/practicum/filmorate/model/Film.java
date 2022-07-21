@@ -26,12 +26,4 @@ public class Film {
         this.likes = likes;
         this.rate = rate;
     }
-
-    public void addLike(Long id) {
-        this.likes.add(id);
-    }
-
-    public void deleteLike(Long id) {
-        this.likes.remove(id);
-    }
 }

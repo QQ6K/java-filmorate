@@ -57,9 +57,6 @@ private final FilmService filmService;
         return film;
     }
 
-
-
-
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handleException(ValidationException e) {

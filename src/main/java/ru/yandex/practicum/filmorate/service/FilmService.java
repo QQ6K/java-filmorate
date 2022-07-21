@@ -27,18 +27,26 @@ public class FilmService {
     }
 
 
-    public Film addLikeToFilm(int id, Long userId){
-        filmStorage.getFilms().get(id).addLike(userId);
+    public Film addLikeToFilm(int id, Long userId) {
+        if (filmStorage.getFilms().containsKey(id)) {
+            if (!filmStorage.getFilms().get(id).getLikes().contains(userId)) {
+                filmStorage.getFilms().get(id).getLikes().add(userId);
+            }
+        }
         return filmStorage.getFilms().get(id);
     }
 
-    public Film deleteLikeFromFilm(int id, Long userId){
-        filmStorage.getFilms().get(id).deleteLike(userId);
+    public Film deleteLikeFromFilm(int id, Long userId) {
+        if (filmStorage.getFilms().containsKey(id)) {
+            if (filmStorage.getFilms().get(id).getLikes().contains(userId)) {
+                filmStorage.getFilms().get(id).getLikes().remove(userId);
+            }
+        }
         return filmStorage.getFilms().get(id);
     }
 
 
-    public List<Film> getPopular(int count){
+    public List<Film> getPopular(int count) {
         return filmStorage.findPopular(count);
     }
 
