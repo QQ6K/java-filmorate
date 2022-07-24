@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.utilities.Validator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @Slf4j
@@ -46,47 +45,33 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable int id){
+    public User getUser(@PathVariable int id) {
         log.info("Получен GET запрос на /users/id");
         return userService.getUser(id);
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
-    public User addToFriends(@PathVariable int id, @PathVariable Long friendId){
+    public User addToFriends(@PathVariable int id, @PathVariable Long friendId) {
+        log.info("Получен PUT запрос на /users/"+id +"/friends/"+friendId.intValue());
         return userService.addToFriends(id, friendId);
     }
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
-    public User removeFromFriends(@PathVariable int id, @PathVariable Long friendId){
+    public User removeFromFriends(@PathVariable int id, @PathVariable Long friendId) {
+        log.info("Получен DELETE запрос на /users/"+id +"/friends/"+friendId.intValue());
         return userService.removeFromFriends(id, friendId);
     }
 
     @GetMapping("/users/{id}/friends")
-    public List getAllFriends(@PathVariable int id){
+    public List getAllFriends(@PathVariable int id) {
+        log.info("Получен GET запрос на /users/"+id +"/friends");
         return userService.getUsersFriends(id);
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public ArrayList<Long> getOtherUserFriends(@PathVariable int id, @PathVariable int otherId){
+    public ArrayList<User> getOtherUserFriends(@PathVariable int id, @PathVariable int otherId) {
+        log.info("Получен GET запрос на /users/"+id +"/friends/common/"+otherId);
         return userService.getMutualFriends(id, otherId);
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleException(ValidationException e) {
-        log.info(e.getMessage());
-    }
-
-    @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleNoHandlerFound(NoHandlerFoundException e)  {
-        log.info(e.getMessage());
-    }
-
-    @ExceptionHandler(InternalError.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleExceptionISE(Exception e)  {
-        log.info(e.getMessage());
     }
 
 }

@@ -8,9 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface FilmStorage {
-    public Map<Integer, Film> getFilms();
-    public Collection<Film> findAll();
-    public Film create(@RequestBody Film film);
-    public Film put(@RequestBody Film film);
-    public List<Film> findPopular(int count);
+    Film getFilm(int id);
+
+    Map<Integer, Film> getFilms();
+
+    Collection<Film> findAll();
+
+    Film create(Film film);
+
+    Film put(Film film);
+
+    List<Film> findPopular(int count);
 }

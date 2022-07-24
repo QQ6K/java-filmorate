@@ -11,69 +11,60 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import java.util.Collection;
 import java.util.List;
 
-@RequestMapping("/films")
 @Slf4j
 @RestController
 public class FilmController {
-private final FilmService filmService;
+    private final FilmService filmService;
 
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
 
-    @GetMapping
+    @GetMapping("/films")
     public Collection<Film> findAll() {
         log.info("Получен GET запрос на /films");
         return filmService.getFilmStorage().findAll();
     }
 
-    @PostMapping
+    @PostMapping("/films")
     public Film create(@RequestBody Film film) {
         log.info("Получен POST запрос на /films");
         filmService.getFilmStorage().create(film);
         return film;
     }
 
-    @PutMapping
+    @PutMapping("/films")
     public Film put(@RequestBody Film film) {
         log.info("Получен PUT запрос на /films");
         filmService.getFilmStorage().put(film);
         return film;
     }
 
-    @GetMapping("/films/popular?count={count}")
-    public List<Film> getPopular(@PathVariable int count){
+    @GetMapping("/films/{id}")
+    public Film getFilm(@PathVariable int id) {
+        log.info("Получен GET запрос на /films/"+id);
+        return filmService.getFilm(id);
+    }
+
+    @GetMapping("/films/popular")
+    public List<Film> getPopular(@RequestParam(required = false, defaultValue = "10") int count) {
+        log.info("Получен GET запрос на /films/popular");
         return filmService.getPopular(count);
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")
-    public Film deleteLike(@PathVariable int id, @PathVariable Long userId){
-        return filmService.deleteLikeFromFilm(id,userId);
+    public Film deleteLike(@PathVariable int id, @PathVariable Long userId) {
+        log.info("Получен DELETE запрос на /films/"+id +"/like/"+userId.intValue());
+        return filmService.deleteLikeFromFilm(id, userId);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
-    public Film addLikeToFilm(@RequestBody Film film, @PathVariable int id, @PathVariable Long userId){
-        filmService.deleteLikeFromFilm(id,userId);
-        return film;
+    public Film addLikeToFilm(@PathVariable int id, @PathVariable Long userId) {
+        log.info("Получен PUT запрос на /films/"+id +"/like/"+userId.intValue());
+        return filmService.addLikeToFilm(id, userId);
     }
 
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleException(ValidationException e) {
-        log.info(e.getMessage());
-    }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleNoHandlerFound(NoHandlerFoundException e)  {
-        log.info(e.getMessage());
-    }
-
-    @ExceptionHandler(InternalError.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleExceptionISE(Exception e)  {
-        log.info(e.getMessage());
-    }
 
 
 }

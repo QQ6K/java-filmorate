@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 
 @Slf4j
 public class Validator {
@@ -47,7 +46,7 @@ public class Validator {
         if (film.getReleaseDate().isBefore(cinemaBirthday)) {
             throw new ValidationException("Дата производства фильма до дня рождения кино!");
         }
-        if (film.getDuration()<=0) {
+        if (film.getDuration() <= 0) {
             throw new ValidationException("Продолжительность фильма должна быть больше 0");
         }
     }
