@@ -15,12 +15,13 @@ public class User {
     private LocalDate birthday;
     private HashSet<Long> friends;
 
-    public User(int id, String email, String login, String name, LocalDate birthday) {
-        this.id = id;
+    public User(String email, String login, String name, LocalDate birthday) {
         this.email = email;
         this.login = login;
         this.name = name;
         this.birthday = birthday;
         this.friends = new HashSet();
     }
+
+
 }
