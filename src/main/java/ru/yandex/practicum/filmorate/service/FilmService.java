@@ -2,7 +2,9 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
@@ -62,7 +64,7 @@ public class FilmService {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new NoFoundException("Отсутствиет фильм с id = " + id);
         } else if (filmStorage.getFilms().get(id).getLikes().contains(userId)) {
-            throw new NoFoundException("Пользователь с userId = " + id + " уже поставил лайк");
+            throw new AlreadyExistValidationException("Пользователь с userId = " + id + " уже поставил лайк");
         }
     }
 

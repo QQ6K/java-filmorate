@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,7 +41,7 @@ public class UserControllerTest {
 
     @Test
     void createValidUserResponseShouldBeOkTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(2,"test@test.ru",
                 "test", "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -54,7 +55,7 @@ public class UserControllerTest {
 
     @Test
     void createUserEmailWithoutAtTest() throws Exception {
-        User user = new User("test.ru",
+        User user = new User(1, "test.ru",
                 "test", "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -66,7 +67,7 @@ public class UserControllerTest {
 
     @Test
     void createUserEmailEmptyTest() throws Exception {
-        User user = new User("",
+        User user = new User(1,"",
                 "test", "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -78,7 +79,7 @@ public class UserControllerTest {
 
     @Test
     void createUserEmailNullTest() throws Exception {
-        User user = new User(null,
+        User user = new User(1,null,
                 "test", "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -90,7 +91,7 @@ public class UserControllerTest {
 
     @Test
     void createUserLoginEmptyTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(1,"test@test.ru",
                 "", "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -102,7 +103,7 @@ public class UserControllerTest {
 
     @Test
     void createUserLoginNullTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(1,"test@test.ru",
                 null, "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -114,7 +115,7 @@ public class UserControllerTest {
 
     @Test
     void createUserLoginWithSpaceTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(1,"test@test.ru",
                 "T shirt", "Stephan", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -126,7 +127,7 @@ public class UserControllerTest {
 
     @Test
     void createUserLoginNameTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(1,"test@test.ru",
                 "Tshirt", "", LocalDate.of(2000, 11, 11));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -138,7 +139,7 @@ public class UserControllerTest {
 
     @Test
     void createUserBirthdayTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(1,"test@test.ru",
                 "Tshirt", "Георгий", LocalDate.now().plusDays(1));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
@@ -150,7 +151,7 @@ public class UserControllerTest {
 
     @Test
     void createUserPutTest() throws Exception {
-        User user = new User("test@test.ru",
+        User user = new User(1,"test@test.ru",
                 "Tshirt", "Георгий", LocalDate.now().minusDays(1));
         String body = mapper.writeValueAsString(user);
         RequestBuilder request = MockMvcRequestBuilders.put("/users")
@@ -159,4 +160,81 @@ public class UserControllerTest {
         MvcResult result = mockMvc.perform(request).andReturn();
         assertEquals(200, result.getResponse().getStatus(), "Ожидался код ответа 200");
     }
+
+    @Test
+    void getUserValidTest() throws Exception {
+        User user = new User(3,"test@test.ru",
+                "Tshirt", "Георгий", LocalDate.now().minusDays(1));
+        String body = mapper.writeValueAsString(user);
+        RequestBuilder request = MockMvcRequestBuilders.post("/users")
+                .content(body)
+               // .characterEncoding(StandardCharsets.ISO_8859_1)
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        request = MockMvcRequestBuilders.get("/users/3")
+                .contentType(MediaType.APPLICATION_JSON);
+        result = mockMvc.perform(request).andReturn();
+        assertEquals(200, result.getResponse().getStatus(), "Ожидался код ответа 200");
+        assertEquals(body, result.getResponse().getContentAsString(StandardCharsets.UTF_8),
+                "Данные User-post и User-return не совпадают");
+    }
+
+    @Test
+    void getUserInvalidTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/users/-1")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(404, result.getResponse().getStatus(), "Ожидался код ответа 404");
+    }
+
+
+    @Test
+    void putUserIdInvalidFriendsTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.put("/users/-1/friends/3")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(404, result.getResponse().getStatus(), "Ожидался код ответа 404");
+    }
+
+
+    @Test
+    void putUserIdFriendsInvalidTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.put("/users/1/friends/8000")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(404, result.getResponse().getStatus(), "Ожидался код ответа 404");
+    }
+
+    @Test
+    void putUserIdInvalidFriendsInvalidTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.put("/users/500/friends/-5")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(404, result.getResponse().getStatus(), "Ожидался код ответа 404");
+    }
+
+    @Test
+    void putUserIdFriendsInternalErrorTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.put("/users/500/friends/5.5")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(500, result.getResponse().getStatus(), "Ожидался код ответа 500");
+    }
+
+    @Test
+    void putUserIdFriendsValidTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.put("/users/1/friends/2")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(200, result.getResponse().getStatus(), "Ожидался код ответа 200");
+    }
+
+    @Test
+    void putUserIdFriendsAgainValidTest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.put("/users/1/friends/2")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(request).andReturn();
+        assertEquals(200, result.getResponse().getStatus(), "Ожидался код ответа 200");
+    }
+
 }

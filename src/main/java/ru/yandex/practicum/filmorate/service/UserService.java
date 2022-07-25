@@ -3,7 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -85,7 +87,7 @@ public class UserService {
         if (!userStorage.getUsers().containsKey(id)) {
             throw new NoFoundException("Отсутствиет пользователь с id = " + id);
         } else if (userStorage.getUsers().get(id).getFriends().contains(userId)) {
-            throw new NoFoundException("В списке друзей уже есть пользователь с userId = " + id);
+            throw new AlreadyExistValidationException("В списке друзей уже есть пользователь с userId = " + id);
         }
     }
 

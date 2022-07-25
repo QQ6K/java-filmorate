@@ -29,5 +29,9 @@ public class ErrorHandler {
     public void handleThrowable(final Throwable e) {
         log.info("Произошла непредвиденная ошибка.");}
 
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public void handleAlreadyExistException(ValidationException e) {
+        log.info(e.getMessage());}
 
 }

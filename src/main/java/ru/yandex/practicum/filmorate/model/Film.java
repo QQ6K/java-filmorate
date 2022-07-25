@@ -16,7 +16,7 @@ public class Film {
     private Set<Long> likes;
     private int rate;
 
-    public Film(String name, String description, LocalDate releaseDate, int duration, int rate) {
+    public Film(int id, String name, String description, LocalDate releaseDate, int duration, int rate) {
         this.id = id;
         this.name = name;
         this.description = description;
