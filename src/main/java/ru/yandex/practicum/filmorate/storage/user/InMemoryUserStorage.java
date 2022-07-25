@@ -41,7 +41,7 @@ public class InMemoryUserStorage implements UserStorage {
                     user.getEmail() + " уже зарегистрирован.");
         }
         Validator.userValidate(user);
-        user.setId(getNextId());
+        if (user.getId()==0) user.setId(getNextId());
         users.put(user.getId(), user);
         return user;
     }

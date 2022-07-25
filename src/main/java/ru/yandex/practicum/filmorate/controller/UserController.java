@@ -1,10 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.NoHandlerFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.utilities.Validator;
@@ -71,7 +68,7 @@ public class UserController {
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public ArrayList<User> getOtherUserFriends(@PathVariable int id, @PathVariable int otherId) {
         log.info("Получен GET запрос на /users/"+id +"/friends/common/"+otherId);
-        return userService.getMutualFriends(id, otherId);
+        return userService.getCommonFriends(id, otherId);
     }
 
 }

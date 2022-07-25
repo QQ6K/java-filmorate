@@ -63,18 +63,18 @@ public class UserService {
         return friends;
     }
 
-    public ArrayList<User> getMutualFriends(int id, int otherId) {
-        ArrayList<User> mutualFriends = new ArrayList<>();
+    public ArrayList<User> getCommonFriends(int id, int otherId) {
+        ArrayList<User> commonFriends = new ArrayList<>();
         checkIdUser(id);
         checkIdUser(otherId);
         for (Long i : userStorage.getUser(id).getFriends()) {
             for (Long j : userStorage.getUser(otherId).getFriends()) {
-                if (i.equals(j) && !mutualFriends.contains(i)) {
-                    mutualFriends.add(userStorage.getUser(i.intValue()));
+                if (i.equals(j) && !commonFriends.contains(i)) {
+                    commonFriends.add(userStorage.getUser(i.intValue()));
                 }
             }
         }
-        return mutualFriends;
+        return commonFriends;
     }
 
     public void checkIdUser(int id) {

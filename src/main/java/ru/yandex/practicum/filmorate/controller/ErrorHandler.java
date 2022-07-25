@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 
@@ -18,6 +19,11 @@ public class ErrorHandler {
         log.info(e.getMessage());
     }
 
+    @ExceptionHandler(AlreadyExistValidationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public void handleAlreadyExistException(AlreadyExistValidationException e) {
+        log.info(e.getMessage());}
+
     @ExceptionHandler(NoFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleNoHandlerFound(NoFoundException e) {
@@ -29,9 +35,6 @@ public class ErrorHandler {
     public void handleThrowable(final Throwable e) {
         log.info("Произошла непредвиденная ошибка.");}
 
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public void handleAlreadyExistException(ValidationException e) {
-        log.info(e.getMessage());}
+
 
 }
