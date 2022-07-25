@@ -197,7 +197,7 @@ public class UserControllerTest {
 
 
     @Test
-    void putUserIdFriendsInvalidTest() throws Exception {
+    void getUserIdFriendsInvalidTest() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.put("/users/1/friends/8000")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request).andReturn();
@@ -205,7 +205,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void putUserIdInvalidFriendsInvalidTest() throws Exception {
+    void getUserIdInvalidFriendsInvalidTest() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.put("/users/500/friends/-5")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request).andReturn();
@@ -213,7 +213,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void putUserIdFriendsInternalErrorTest() throws Exception {
+    void getUserIdFriendsInternalErrorTest() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.put("/users/500/friends/5.5")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request).andReturn();
@@ -221,18 +221,31 @@ public class UserControllerTest {
     }
 
     @Test
-    void putUserIdFriendsValidTest() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.put("/users/1/friends/2")
+    void addUserIdFriendsValidTest() throws Exception {
+        User user100 = new User(100,"test@test.ru",
+                "test", "Stephan", LocalDate.of(2000, 11, 11));
+        String body100 = mapper.writeValueAsString(user100);
+        RequestBuilder request = MockMvcRequestBuilders.post("/users")
+                .content(body100)
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request).andReturn();
-        assertEquals(200, result.getResponse().getStatus(), "Ожидался код ответа 200");
-    }
 
-    @Test
-    void putUserIdFriendsAgainValidTest() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.put("/users/1/friends/2")
+        User user200 = new User(200,"test1100@test.ru",
+                "test", "Stephan", LocalDate.of(2000, 11, 11));
+        String body200 = mapper.writeValueAsString(user200);
+        request = MockMvcRequestBuilders.post("/users")
+                .content(body200)
                 .contentType(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(request).andReturn();
+        result = mockMvc.perform(request).andReturn();
+
+        request = MockMvcRequestBuilders.put("/users/100/friends/200")
+                .contentType(MediaType.APPLICATION_JSON);
+        result = mockMvc.perform(request).andReturn();
+        assertEquals(200, result.getResponse().getStatus(), "Ожидался код ответа 200");
+        //повторное добавление проверка 409
+        request = MockMvcRequestBuilders.put("/users/100/friends/200")
+                .contentType(MediaType.APPLICATION_JSON);
+        result = mockMvc.perform(request).andReturn();
         assertEquals(409, result.getResponse().getStatus(), "Ожидался код ответа 409");
     }
 
@@ -260,16 +273,55 @@ public class UserControllerTest {
         assertEquals(404, result.getResponse().getStatus(), "Ожидался код ответа 200");
     }
 
-  //  /users/{id}/friends/common/{otherId}
+
     void getUsersFriendsCommonFriendsTest() throws Exception {
-        User user = new User(13,"test@test.ru",
+        User user1 = new User(1001,"test@test.ru",
                 "test", "Stephan", LocalDate.of(2000, 11, 11));
-        String body = mapper.writeValueAsString(user);
+        String body1 = mapper.writeValueAsString(user1);
         RequestBuilder request = MockMvcRequestBuilders.post("/users")
-                .content(body)
+                .content(body1)
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(request).andReturn();
-
+        User user2 = new User(1002,"test@test.ru",
+                "test", "Stephan", LocalDate.of(2000, 11, 11));
+        String body2 = mapper.writeValueAsString(user2);
+        request = MockMvcRequestBuilders.post("/users")
+                .content(body2)
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        User user3 = new User(1003,"test@test.ru",
+                "test", "Stephan", LocalDate.of(2000, 11, 11));
+        String body3 = mapper.writeValueAsString(user3);
+        request = MockMvcRequestBuilders.post("/users")
+                .content(body3)
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        User user4 = new User(1004,"test@test.ru",
+                "test", "Stephan", LocalDate.of(2000, 11, 11));
+        String body4 = mapper.writeValueAsString(user4);
+        request = MockMvcRequestBuilders.post("/users")
+                .content(body4)
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        //Добавление друзей
+        request = MockMvcRequestBuilders.put("/users/1001/friends/1002")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        request = MockMvcRequestBuilders.put("/users/1001/friends/1003")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        request = MockMvcRequestBuilders.put("/users/1001/friends/1004")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        request = MockMvcRequestBuilders.put("/users/1002/friends/1004")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        //общие друзья
+        request = MockMvcRequestBuilders.get("/users/1002/friends/common/1001")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+        assertEquals(body4, result.getResponse().getContentAsString(),
+                "Данные User-post и User-return не совпадают");
     }
 
 }

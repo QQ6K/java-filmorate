@@ -35,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     public Film create(Film film) {
         Validator.filmValidate(film);
-        film.setId(getNextId());
+        if (film.getId()==0) film.setId(getNextId());
         log.info(String.valueOf(globalId));
         films.put(film.getId(), film);
         return film;
@@ -52,13 +52,13 @@ public class InMemoryFilmStorage implements FilmStorage {
     public List<Film> findPopular(int count) {
         ArrayList<Film> filmsSort = new ArrayList(films.values());
         if (!films.isEmpty()) {
-            Collections.sort(filmsSort, (o1, o2) -> {
-                if (o1.getRate() < o2.getRate()) return 1;
-                else if (o1.getRate() > o2.getRate()) return -1;
+            Collections.sort(filmsSort, (o2, o1) -> {
+                if (o1.getLikes().size() > o2.getLikes().size()) return 1;
+                else if (o1.getLikes().size() < o2.getLikes().size()) return -1;
                 else return 0;
             });
             if (filmsSort.size() >= count) {
-                return filmsSort.subList(count, filmsSort.size());
+                return filmsSort.subList(0, count);
             } else return filmsSort;
         } else return filmsSort;
     }

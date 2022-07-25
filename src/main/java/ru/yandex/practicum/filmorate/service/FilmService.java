@@ -43,6 +43,7 @@ public class FilmService {
     }
 
     public List<Film> getPopular(int count) {
+        if (count<=0) throw new  NoFoundException("Количество фильмов в выборке меньеш или равно нулю");
         return filmStorage.findPopular(count);
     }
 
@@ -56,7 +57,7 @@ public class FilmService {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new NoFoundException("Отсутствует фильм с id = " + id);
         } else if (!filmStorage.getFilms().get(id).getLikes().contains(userId)) {
-            throw new NoFoundException("Отсутствует лайк пользователя с userId = " + id);
+            throw new NoFoundException("Отсутствует лайк пользователя с userId = " + userId);
         }
     }
 
@@ -64,7 +65,7 @@ public class FilmService {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new NoFoundException("Отсутствиет фильм с id = " + id);
         } else if (filmStorage.getFilms().get(id).getLikes().contains(userId)) {
-            throw new AlreadyExistValidationException("Пользователь с userId = " + id + " уже поставил лайк");
+            throw new AlreadyExistValidationException("Пользователь с userId = " + userId + " уже поставил лайк");
         }
     }
 
