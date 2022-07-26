@@ -3,45 +3,68 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.utilities.Validator;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/films")
 public class FilmController {
-    private final Map<Integer, Film> films = new HashMap<>();
+    private final FilmService filmService;
 
-    @GetMapping
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
+
+    @GetMapping("/films")
     public Collection<Film> findAll() {
         log.info("Получен GET запрос на /films");
-        return films.values();
+        return filmService.getFilmStorage().findAll();
     }
 
-    @PostMapping
+    @PostMapping("/films")
     public Film create(@RequestBody Film film) {
         log.info("Получен POST запрос на /films");
-        Validator.filmValidate(film);
-        films.put(film.getId(), film);
+        filmService.getFilmStorage().create(film);
         return film;
     }
 
-    @PutMapping
+    @PutMapping("/films")
     public Film put(@RequestBody Film film) {
         log.info("Получен PUT запрос на /films");
-        Validator.filmValidate(film);
-        films.put(film.getId(), film);
+        filmService.getFilmStorage().put(film);
         return film;
     }
 
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleException(ValidationException e) {
-        log.info(e.getMessage());
+    @GetMapping("/films/{id}")
+    public Film getFilm(@PathVariable int id) {
+        log.info("Получен GET запрос на /films/"+id);
+        return filmService.getFilm(id);
     }
+
+    @GetMapping("/films/popular")
+    public List<Film> getPopular(@RequestParam(required = false, defaultValue = "10") int count) {
+        log.info("Получен GET запрос на /films/popular");
+        return filmService.getPopular(count);
+    }
+
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public Film deleteLike(@PathVariable int id, @PathVariable Long userId) {
+        log.info("Получен DELETE запрос на /films/"+id +"/like/"+userId.intValue());
+        return filmService.deleteLikeFromFilm(id, userId);
+    }
+
+    @PutMapping("/films/{id}/like/{userId}")
+    public Film addLikeToFilm(@PathVariable int id, @PathVariable Long userId) {
+        log.info("Получен PUT запрос на /films/"+id +"/like/"+userId.intValue());
+        return filmService.addLikeToFilm(id, userId);
+    }
+
+
+
+
 }

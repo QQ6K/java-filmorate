@@ -1,54 +1,74 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.utilities.Validator;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 
-@Slf4j
 @RestController
-@RequestMapping("/users")
+@Slf4j
 public class UserController {
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final UserService userService;
 
-    @GetMapping
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/users")
     public Collection<User> findAll() {
         log.debug("Получен GET запрос на /users");
-        return users.values();
+        return userService.getUserStorage().findAll();
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public User create(@RequestBody User user) {
         log.info("Получен POST запрос на /users");
-        if (users.containsKey(user.getEmail())) {
-            throw new ValidationException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
-        }
         Validator.userValidate(user);
-        users.put(user.getId(), user);
+        userService.getUserStorage().create(user);
         return user;
     }
 
-    @PutMapping
+    @PutMapping("/users")
     public User put(@RequestBody User user) {
         log.info("Получен PUT запрос на /users");
-        if (users.containsKey(user.getEmail())) {
-            throw new ValidationException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
-        }
         Validator.userValidate(user);
-        users.put(user.getId(), user);
+        userService.getUserStorage().put(user);
         return user;
     }
 
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleException(ValidationException e) {
-        log.info(e.getMessage());
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable int id) {
+        log.info("Получен GET запрос на /users/id");
+        return userService.getUser(id);
     }
+
+    @PutMapping("/users/{id}/friends/{friendId}")
+    public User addToFriends(@PathVariable int id, @PathVariable Long friendId) {
+        log.info("Получен PUT запрос на /users/"+id +"/friends/"+friendId.intValue());
+        return userService.addToFriends(id, friendId);
+    }
+
+    @DeleteMapping("/users/{id}/friends/{friendId}")
+    public User removeFromFriends(@PathVariable int id, @PathVariable Long friendId) {
+        log.info("Получен DELETE запрос на /users/"+id +"/friends/"+friendId.intValue());
+        return userService.removeFromFriends(id, friendId);
+    }
+
+    @GetMapping("/users/{id}/friends")
+    public List getAllFriends(@PathVariable int id) {
+        log.info("Получен GET запрос на /users/"+id +"/friends");
+        return userService.getUsersFriends(id);
+    }
+
+    @GetMapping("/users/{id}/friends/common/{otherId}")
+    public ArrayList<User> getOtherUserFriends(@PathVariable int id, @PathVariable int otherId) {
+        log.info("Получен GET запрос на /users/"+id +"/friends/common/"+otherId);
+        return userService.getCommonFriends(id, otherId);
+    }
+
 }
