@@ -15,6 +15,7 @@ public class Film {
     private int duration;
     private Set<Long> likes;
     private int rate;
+    private int genreId;
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration,
                 int rate) {
