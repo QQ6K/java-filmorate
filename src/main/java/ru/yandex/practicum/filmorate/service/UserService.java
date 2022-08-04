@@ -69,7 +69,7 @@ public class UserService {
         checkIdUser(otherId);
         for (Long i : userStorage.getUser(id).getFriends()) {
             for (Long j : userStorage.getUser(otherId).getFriends()) {
-                if (i.equals(j) && !commonFriends.contains(i)) {
+                if (i.equals(j) && !commonFriends.contains(userStorage.getUser(i.intValue()))) {
                     commonFriends.add(userStorage.getUser(i.intValue()));
                 }
             }
@@ -77,13 +77,13 @@ public class UserService {
         return commonFriends;
     }
 
-    public void checkIdUser(int id) {
+    private void checkIdUser(int id) {
         if (!userStorage.getUsers().containsKey(id)) {
             throw new NoFoundException("Отсутствиет пользователь с id = " + id);
         }
     }
 
-    public void checkUserFriendIdAdd(int id, Long userId) {
+    private void checkUserFriendIdAdd(int id, Long userId) {
         if (!userStorage.getUsers().containsKey(id)) {
             throw new NoFoundException("Отсутствиет пользователь с id = " + id);
         } else if (userStorage.getUsers().get(id).getFriends().contains(userId)) {
@@ -91,7 +91,7 @@ public class UserService {
         }
     }
 
-    public void checkUserFriendIdDelete(int id, Long userId) {
+    private void checkUserFriendIdDelete(int id, Long userId) {
         if (!userStorage.getUsers().containsKey(id)) {
             throw new NoFoundException("Отсутствиет пользователь с id = " + id);
         } else if (!userStorage.getUsers().get(id).getFriends().contains(userId)) {

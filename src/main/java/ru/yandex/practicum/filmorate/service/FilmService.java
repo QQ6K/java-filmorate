@@ -47,13 +47,13 @@ public class FilmService {
         return filmStorage.findPopular(count);
     }
 
-    public void checkFilmId(int id) {
+    private void checkFilmId(int id) {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new NoFoundException("Отсутствует фильм с id = " + id);
         }
     }
 
-    public void checkFilmUserIdForDelete(int id, Long userId) {
+    private void checkFilmUserIdForDelete(int id, Long userId) {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new NoFoundException("Отсутствует фильм с id = " + id);
         } else if (!filmStorage.getFilms().get(id).getLikes().contains(userId)) {
@@ -61,7 +61,7 @@ public class FilmService {
         }
     }
 
-    public void checkFilmUserIdForAdd(int id, Long userId) {
+    private void checkFilmUserIdForAdd(int id, Long userId) {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new NoFoundException("Отсутствиет фильм с id = " + id);
         } else if (filmStorage.getFilms().get(id).getLikes().contains(userId)) {
