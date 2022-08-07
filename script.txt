@@ -1,0 +1,50 @@
+# Modify this code to update the DB schema diagram.
+# To reset the sample schema, replace everything with
+# two dots ('..' - without quotes).
+user
+-
+id int
+email varchar(50) UNIQUE
+login varchar(50) UNIQUE
+name varchar(50)
+birthdate date
+
+friends
+-
+user_id1 FK >- user.id
+user_id2 FK >- user.id
+status boolean
+
+film
+-
+id int
+name varchar(50)
+description varchar(50)
+release_date date
+duration int
+
+likes
+-
+film_id int FK >- film.id
+user_id int FK >- user.id
+
+film_genres
+-
+film_id int FK >- film.id
+genre_id FK >- genre_names.genre_id
+
+genre_names
+-
+genre_id int
+name varchar(50) UNIQUE
+
+film_rates
+-
+film_id int FK >- film.id
+rate_id int FK >- rate_names.id
+
+rate_names
+-
+id int
+name varchar(50) UNIQUE
+
