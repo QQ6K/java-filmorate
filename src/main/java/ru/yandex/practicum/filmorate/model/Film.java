@@ -27,4 +27,8 @@ public class Film {
         this.likes = new HashSet<>();
         this.rate = rate;
     }
+
+    public Film() {
+
+    }
 }

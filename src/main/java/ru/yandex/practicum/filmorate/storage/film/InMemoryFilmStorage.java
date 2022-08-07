@@ -10,9 +10,8 @@ import ru.yandex.practicum.filmorate.utilities.Validator;
 import java.util.*;
 
 @Slf4j
-@Component
 public class InMemoryFilmStorage implements FilmStorage {
-    private final Map<Integer, Film> films = new HashMap<>();
+   private final Map<Integer, Film> films = new HashMap<>();
     private int globalId = 0;
 
     @Autowired
@@ -62,5 +61,4 @@ public class InMemoryFilmStorage implements FilmStorage {
             } else return filmsSort;
         } else return filmsSort;
     }
-
 }

@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.DbFilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
@@ -17,7 +18,7 @@ public class FilmService {
     private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmService(InMemoryFilmStorage filmStorage) {
+    public FilmService(DbFilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
 
