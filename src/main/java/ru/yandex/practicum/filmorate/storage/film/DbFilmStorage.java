@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +32,20 @@ public class DbFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilm(int id) {
-        String sql =
-                "SELECT ID, NAME, DESCRIPTION, RELEASE_DATE, DURATION  FROM FILMS where ID=1";
-        List<Film> result = jdbcTemplate.query(sql, this::mapToFilm, id);
-        if (result.isEmpty()) {
+         Film film = new Film();
+        SqlRowSet filmRows = jdbcTemplate.queryForRowSet
+                ("SELECT ID, NAME, DESCRIPTION, RELEASE_DATE, DURATION  FROM FILMS where ID= ?", id);
+       // List<Film> result = jdbcTemplate.query(sql, this::mapToFilm, id);
+        film.setId(Integer.parseInt(filmRows.getString("id")));
+        film.setName(filmRows.getString("name"));
+        film.setDescription(filmRows.getString("description"));
+        film.setReleaseDate(LocalDate.parse(filmRows.getString("RELEASE_DATE")));
+        film.setId(Integer.parseInt(filmRows.getString("DURATION")));
+       /* if (result.isEmpty()) {
             return null;
         }
-        return result.get(0);
+        return result.get(0);*/
+        return null;
     }
 
 
