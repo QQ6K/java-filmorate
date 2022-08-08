@@ -14,11 +14,11 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Long> likes;
-    private int rate;
-    private int genreId;
+    private String rate;
+    private String genre;
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration,
-                int rate) {
+                String rate) {
         this.id = id;
         this.name = name;
         this.description = description;

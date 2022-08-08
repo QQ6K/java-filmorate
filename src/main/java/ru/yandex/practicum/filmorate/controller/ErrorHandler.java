@@ -30,10 +30,10 @@ public class ErrorHandler {
         log.info(e.getMessage());
     }
 
-    @ExceptionHandler
+    /*@ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void handleThrowable(final Throwable e) {
-        log.info("Произошла непредвиденная ошибка.");}
+        log.info("Произошла непредвиденная ошибка.");}*/
 
 
 

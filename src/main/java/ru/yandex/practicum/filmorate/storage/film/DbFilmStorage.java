@@ -31,25 +31,27 @@ public class DbFilmStorage implements FilmStorage {
 
 
     @Override
-    public Film getFilm(int id) {
-         Film film = new Film();
+    public Film getFilm(int id) {Film film = new Film();
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("FILMS")
+                .usingGeneratedKeyColumns("ID");
+        Map<String, Object> values = new HashMap<>();
+        values.put("NAME", "film.getNam");
+        values.put("DESCRIPTION", "film.getDescription()");
+        values.put("RELEASE_DATE", "2020-05-30");
+        values.put("DURATION", "150");
+        film.setId(simpleJdbcInsert.executeAndReturnKey(values).intValue());
+
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet
-                ("SELECT ID, NAME, DESCRIPTION, RELEASE_DATE, DURATION  FROM FILMS where ID= ?", id);
-       // List<Film> result = jdbcTemplate.query(sql, this::mapToFilm, id);
+                ("SELECT * FROM FILMS where ID= 1");
+        System.out.println(filmRows.toString());
+        if (filmRows.next()) {
         film.setId(Integer.parseInt(filmRows.getString("id")));
         film.setName(filmRows.getString("name"));
         film.setDescription(filmRows.getString("description"));
         film.setReleaseDate(LocalDate.parse(filmRows.getString("RELEASE_DATE")));
-        film.setId(Integer.parseInt(filmRows.getString("DURATION")));
-        SqlRowSet rateRows = jdbcTemplate.queryForRowSet
-                ("SELECT ID, NAME, DESCRIPTION, RELEASE_DATE, DURATION  FROM FILMS where ID= ?", id);
-
-
-       /* if (result.isEmpty()) {
-            return null;
-        }
-        return result.get(0);*/
-        return null;
+        film.setDuration(Integer.parseInt(filmRows.getString("DURATION")));}
+        return film;
     }
 
 

@@ -18,7 +18,7 @@ public class FilmService {
     private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmService(DbFilmStorage filmStorage) {
+    public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
 
@@ -27,7 +27,7 @@ public class FilmService {
     }
 
     public Film getFilm(int id) {
-        checkFilmId(id);
+   //     checkFilmId(id);
         return filmStorage.getFilm(id);
     }
 
