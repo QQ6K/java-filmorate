@@ -41,6 +41,10 @@ public class DbFilmStorage implements FilmStorage {
         film.setDescription(filmRows.getString("description"));
         film.setReleaseDate(LocalDate.parse(filmRows.getString("RELEASE_DATE")));
         film.setId(Integer.parseInt(filmRows.getString("DURATION")));
+        SqlRowSet rateRows = jdbcTemplate.queryForRowSet
+                ("SELECT ID, NAME, DESCRIPTION, RELEASE_DATE, DURATION  FROM FILMS where ID= ?", id);
+
+
        /* if (result.isEmpty()) {
             return null;
         }
