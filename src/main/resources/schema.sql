@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS film_rates;
 DROP TABLE IF EXISTS film_genres;
 DROP TABLE IF EXISTS films;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS genres_names;
+DROP TABLE IF EXISTS genre_names;
 DROP TABLE IF EXISTS rate_names;
 
 CREATE TABLE IF NOT EXISTS rate_names
@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS users
     email varchar(50) NOT NULL,
     login varchar(50) NOT NULL,
     name  varchar(50) NOT NULL,
+    birthday date NOT NULL,
     CONSTRAINT uc_user_email UNIQUE (email),
     CONSTRAINT uc_user_login UNIQUE (login)
     );
@@ -73,7 +74,8 @@ CREATE TABLE IF NOT EXISTS film_genres
     film_id integer NOT NULL,
     genre_id integer NOT NULL,
     CONSTRAINT pk_film_genres PRIMARY KEY (film_id, genre_id),
-    CONSTRAINT fk_film_genres_film_id FOREIGN KEY (film_id) REFERENCES films(id)
+    CONSTRAINT fk_film_genres_film_id FOREIGN KEY (film_id) REFERENCES films(id),
+    CONSTRAINT fk_film_genres_rate_id FOREIGN KEY(genre_id) REFERENCES genre_names (id)
 );
 
 

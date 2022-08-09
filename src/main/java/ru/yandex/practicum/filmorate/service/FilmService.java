@@ -27,7 +27,7 @@ public class FilmService {
     }
 
     public Film getFilm(int id) {
-   //     checkFilmId(id);
+        checkFilmId(id);
         return filmStorage.getFilm(id);
     }
 
