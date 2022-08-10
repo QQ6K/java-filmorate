@@ -14,18 +14,17 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Long> likes;
-    private String rate;
-    private String genre;
+    private Mpa mpa;
+    private Set<Genre> genres;
 
-    public Film(int id, String name, String description, LocalDate releaseDate, int duration,
-                String rate) {
+
+    public Film(int id, String name, String description, LocalDate releaseDate, int duration) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.likes = new HashSet<>();
-        this.rate = rate;
     }
 
     public Film() {

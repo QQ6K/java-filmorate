@@ -10,8 +10,10 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.utilities.Validator;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +38,7 @@ public class DbFilmStorage implements FilmStorage {
     public Film getFilm(int id) {
         Film film = new Film();
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet
-                ("SELECT id, name, description, release_date, duration FROM FILMS where ID= ?");
+                ("SELECT * FROM FILMS where ID= ?");
         if (filmRows.next()) {
             film.setId(Integer.parseInt(filmRows.getString("id")));
             film.setName(filmRows.getString("name"));
@@ -56,7 +58,7 @@ public class DbFilmStorage implements FilmStorage {
     @Override
     public Collection<Film> findAll() {
         String sql =
-                "SELECT id, name, description, release_date, duration FROM FILMS";
+                "SELECT * FROM films";
         return
                 jdbcTemplate.query(sql, new ResultSetExtractor<Collection<Film>>() {
                     @Override
@@ -122,6 +124,22 @@ public class DbFilmStorage implements FilmStorage {
         return null;
     }
 
+    public void addLikes(Film film) {
+        jdbcTemplate.update("DELETE FROM likes WHERE film_id  = ?", film.getId());
+        String sql = "INSERT INTO likes (film_id, user_id) VALUES(?, ?)";
+        Set<Long> likes = film.getLikes();
+        for (Long id : likes ) {
+            jdbcTemplate.update(sql, film.getId(), id);
+        }
+    }
+
+    public void getLikes(Film film) {
+        String sql = "SELECT user_id FROM likes WHERE film_id = ?";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, film.getId());
+        while (sqlRowSet.next()) {
+            film.getLikes().add(sqlRowSet.getLong("user_id"));
+        }
+
     /*  @Override
       public Film create(Film film) {
           SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
@@ -144,7 +162,7 @@ public class DbFilmStorage implements FilmStorage {
 
 
       */
-    private Film mapToFilm(ResultSet resultSet, int rowNum) throws SQLException {
+    /*private Film mapToFilm(ResultSet resultSet, int rowNum) throws SQLException {
         Film film = new Film();
         film.setId(resultSet.getInt("ID"));
         film.setName(resultSet.getString("NAME"));
@@ -152,7 +170,39 @@ public class DbFilmStorage implements FilmStorage {
         film.setReleaseDate(resultSet.getDate("RELEASE_DATE").toLocalDate());
         film.setDuration(resultSet.getInt("DURATION"));
         //  film.setMpa(new Rating(resultSet.getLong("RATING_ID"), resultSet.getString("R_NAME")));
-        return film;
+        return film;*/
+    }
+
+    public void addFilmGenres(Film film) {
+        String sql = "INSERT INTO film_genres (film_id, genre_id) VALUES(?, ?)";
+        Set<Genre> genres = film.getGenres();
+        if (genres == null) {
+            return;
+        }
+        for (var genre : genres ) {
+            jdbcTemplate.update(sql, film.getId(), genre.getId());
+        }}
+
+
+
+        public void updateFilmGenres(Film film) {
+            String sql = "DELETE FROM film_genres WHERE film_id= ?";
+            jdbcTemplate.update(sql, film.getId());
+            addFilmGenres(film);
+        }
+
+    public void addFilmMpa(Film film) {
+        String sql = "INSERT INTO film_mpa (film_id, mpa_id) VALUES(?, ?)";
+        Mpa mpa = film.getMpa();
+            jdbcTemplate.update(sql, film.getId(), mpa.getId());
+        }
+
+
+
+    public void updateFilmMpa(Film film) {
+        String sql = "DELETE FROM film_genres WHERE film_id= ?";
+        jdbcTemplate.update(sql, film.getId());
+        addFilmGenres(film);
     }
 
 

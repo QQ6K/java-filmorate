@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.mpa;
+package ru.yandex.practicum.filmorate.interfaces;
 
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -6,11 +6,12 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import java.util.Collection;
 
 public interface MpaStorage {
-    Genre getMpa(int id);
+
+    Mpa getMpa(int id);
 
     Collection<Mpa> findAll();
 
-    Genre create(Mpa mpa);
+    Mpa create(Mpa mpa);
 
-    Genre update(Mpa mpa);
+    Mpa update(Mpa mpa);
 }
