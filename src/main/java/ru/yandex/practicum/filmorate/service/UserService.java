@@ -7,6 +7,8 @@ import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.interfaces.UserStorage;
+import ru.yandex.practicum.filmorate.storage.genre.DbGenreStorage;
+import ru.yandex.practicum.filmorate.storage.user.DbUserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class UserService {
     private final UserStorage userStorage;
 
     @Autowired
-    public UserService(UserStorage userStorage) {
+    public UserService(DbUserStorage userStorage) {
         this.userStorage = userStorage;
     }
 

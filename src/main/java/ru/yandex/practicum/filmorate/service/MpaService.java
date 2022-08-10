@@ -34,13 +34,12 @@ public class MpaService {
         return dbMpaStorage.update(mpa);
     }
 
-    public Mpa findById(int id) {
+    public Mpa getMpa(int id) {
         Mpa mpa = dbMpaStorage.getMpa(id);
         if (mpa == null) {
             log.warn("Отсутствует рейтинг MPA с id=" + id);
             throw new NoFoundException("не удалось найти MPA");
         }
-
         return mpa;
     }
 }

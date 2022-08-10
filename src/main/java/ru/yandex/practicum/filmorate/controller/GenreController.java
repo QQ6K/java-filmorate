@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -8,31 +9,33 @@ import ru.yandex.practicum.filmorate.service.GenreService;
 import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.Collection;
+import java.util.List;
 
+@Slf4j
+@RestController
 public class GenreController {
     private final GenreService genreService;
 
-    @Autowired
     public GenreController(GenreService genreService) {
         this.genreService = genreService;
     }
 
-    @GetMapping("(/mpa/{id}")
+    @GetMapping("(/genres/{id}")
     public Genre findById(@PathVariable int id) {
         return genreService.findById(id);
     }
 
-    @GetMapping("/mpa")
-    public Collection<Genre> findAll() {
+    @GetMapping("/genres")
+    public List<Genre> findAll() {
         return genreService.findAll();
     }
 
-    @PostMapping("/mpa")
+    @PostMapping("/genre")
     public Genre create(@RequestBody Genre genre) {
         return genreService.create(genre);
     }
 
-    @PutMapping("/mpa")
+    @PutMapping("/genre")
     public Genre update(@RequestBody Genre genre) {
         return genreService.update(genre);
     }

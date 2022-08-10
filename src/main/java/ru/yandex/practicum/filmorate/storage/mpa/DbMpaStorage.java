@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.interfaces.MpaStorage;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
@@ -29,11 +28,11 @@ public class DbMpaStorage implements MpaStorage {
     @Override
     public Mpa getMpa(int id) {
         Mpa mpa = new Mpa();
-        SqlRowSet genreRows = jdbcTemplate.queryForRowSet
-                ("SELECT * FROM genre_names where id= ?");
-        if (genreRows.next()) {
-            mpa.setId(Integer.parseInt(genreRows.getString("id")));
-            mpa.setName(genreRows.getString("name"));
+        SqlRowSet mpaRows = jdbcTemplate.queryForRowSet
+                ("SELECT * FROM mpa_names WHERE id= ?",id);
+        if (mpaRows.next()) {
+            mpa.setId(Integer.parseInt(mpaRows.getString("id")));
+            mpa.setName(mpaRows.getString("name"));
         }
         return mpa;
     }
@@ -64,9 +63,9 @@ public class DbMpaStorage implements MpaStorage {
     }
 
     private Mpa mapToRating(ResultSet resultSet, int rowNum) throws SQLException {
-        Mpa rating = new Mpa();
-        rating.setId(resultSet.getInt("mpa_names"));
-        rating.setName(resultSet.getString("name"));
-        return rating;
+        Mpa mpa = new Mpa();
+        mpa.setId(resultSet.getInt("id"));
+        mpa.setName(resultSet.getString("name"));
+        return mpa;
     }
 }

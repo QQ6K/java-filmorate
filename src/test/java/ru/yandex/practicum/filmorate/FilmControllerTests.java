@@ -41,7 +41,7 @@ class FilmControllerTests {
         Film film = new Film(1, "Простоквашино",
                 "О несчастных и счастливых, " +
                         "о добре и зле, о лютой ненависти и святой любви",
-                LocalDate.of(1978, 6, 6), 19, 1);
+                LocalDate.of(1978, 6, 6), 19);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -54,7 +54,7 @@ class FilmControllerTests {
     void createFilmBeforeBirthTest() throws Exception {
         Film film = new Film(2, "L'arroseur arrosé",
                 "Политый поливальщик",
-                LocalDate.of(1895, 12, 27), 2, 5);
+                LocalDate.of(1895, 12, 27), 2);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -67,7 +67,7 @@ class FilmControllerTests {
     void createFilmBirthTest() throws Exception {
         Film film = new Film(3, "L'arroseur arrosé",
                 "Политый поливальщик",
-                LocalDate.of(1895, 12, 28), 2, 7);
+                LocalDate.of(1895, 12, 28), 2);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -80,7 +80,7 @@ class FilmControllerTests {
     void createFilmAfterBirthTest() throws Exception {
         Film film = new Film(4, "L'arroseur arrosé",
                 "Политый поливальщик",
-                LocalDate.of(1895, 12, 29), 2, 11);
+                LocalDate.of(1895, 12, 29), 2);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -93,7 +93,7 @@ class FilmControllerTests {
     void createFilmNegativeDurationTest() throws Exception {
         Film film = new Film(5, "Нечто",
                 "Группа учёных сообщила о падении летающего объекта",
-                LocalDate.of(1982, 6, 25), -1, 3);
+                LocalDate.of(1982, 6, 25), -1);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -106,7 +106,7 @@ class FilmControllerTests {
     void createFilmZeroDurationTest() throws Exception {
         Film film = new Film(6, "Нечто",
                 "Группа учёных сообщила о падении летающего объекта",
-                LocalDate.of(1982, 6, 25), 0, 90);
+                LocalDate.of(1982, 6, 25), 0);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -119,7 +119,7 @@ class FilmControllerTests {
     void createFilmPositiveDurationTest() throws Exception {
         Film film = new Film(7, "Нечто",
                 "Группа учёных сообщила о падении летающего объекта",
-                LocalDate.of(1982, 6, 25), 1, 99);
+                LocalDate.of(1982, 6, 25), 1);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -135,7 +135,7 @@ class FilmControllerTests {
                         "Aykroyd conceived Ghostbusters as a project starring " +
                         "himself and John Belushi, in which they would space " +
                         "battling supernatural threats.",
-                LocalDate.of(1984, 6, 8), 105, 25);
+                LocalDate.of(1984, 6, 8), 105);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -151,7 +151,7 @@ class FilmControllerTests {
                         "Aykroyd conceived Ghostbusters as a project starring " +
                         "himself and John Belushi, in which they would space " +
                         "battling supernatural threats.",
-                LocalDate.of(1984, 6, 8), 105, 40);
+                LocalDate.of(1984, 6, 8), 105);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -167,7 +167,7 @@ class FilmControllerTests {
                         " fiction film. The story follows Marty McFly (Fox)," +
                         " a teenager accidentally sent back to 1955 in " +
                         "a time-traveling automobile. Directed by Robert Zemeckis.",
-                LocalDate.of(1985, 7, 3), 116, 57);
+                LocalDate.of(1985, 7, 3), 116);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -185,7 +185,7 @@ class FilmControllerTests {
                         " fiction film. The story follows Marty McFly (Fox)," +
                         " a teenager accidentally sent back to 1955 in " +
                         "a time-traveling automobile. Directed by Robert Zemeckis!!",
-                LocalDate.of(1985, 7, 3), 116, 20);
+                LocalDate.of(1985, 7, 3), 116);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -203,7 +203,7 @@ class FilmControllerTests {
                         " fiction film. The story follows Marty McFly (Fox)," +
                         " a teenager accidentally sent back to 1955 in " +
                         "a time-traveling automobile. Directed by Robert Zemeckis!!!",
-                LocalDate.of(1985, 7, 3), 116, 33);
+                LocalDate.of(1985, 7, 3), 116);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -216,7 +216,7 @@ class FilmControllerTests {
     void createValidFilmPutTest() throws Exception {
         Film film = new Film(13, "Back",
                 "Back!",
-                LocalDate.of(1990, 1, 2), 123, 37);
+                LocalDate.of(1990, 1, 2), 12);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -229,7 +229,7 @@ class FilmControllerTests {
     void getFilmValidTest() throws Exception {
         Film film = new Film(14, "Back",
                 "Back!",
-                LocalDate.of(1990, 1, 2), 123, 85);
+                LocalDate.of(1990, 1, 2), 123);
         String body = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body)
@@ -255,7 +255,7 @@ class FilmControllerTests {
     void addFilmLikeTest() throws Exception {
         Film film = new Film(131, "Back",
                 "Back!",
-                LocalDate.of(1990, 1, 2), 123, 90);
+                LocalDate.of(1990, 1, 2), 123);
         String body131 = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body131)
@@ -287,7 +287,7 @@ class FilmControllerTests {
     void deleteFilmLikeValidTest() throws Exception {
         Film film = new Film(132, "Back",
                 "Back!",
-                LocalDate.of(1990, 1, 2), 123, 97);
+                LocalDate.of(1990, 1, 2), 123);
         String body132 = mapper.writeValueAsString(film);
         RequestBuilder request = MockMvcRequestBuilders.post("/films")
                 .content(body132)
@@ -333,7 +333,7 @@ class FilmControllerTests {
     @Test
     void getPopularTest() throws Exception {
         Film film = new Film(300, "300", "300",
-                LocalDate.of(1978, 6, 6), 19, 3);
+                LocalDate.of(1978, 6, 6), 19);
         film.getLikes().add(1L);
         film.getLikes().add(2L);
         film.getLikes().add(3L);
@@ -344,7 +344,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(100, "100", "100",
-                LocalDate.of(1978, 6, 6), 19, 1);
+                LocalDate.of(1978, 6, 6), 19);
         film.getLikes().add(1L);
         body = mapper.writeValueAsString(film);
         request = MockMvcRequestBuilders.post("/films")
@@ -354,7 +354,7 @@ class FilmControllerTests {
 
 
         film = new Film(101, "101", "101",
-                LocalDate.of(1978, 6, 6), 19, 1);
+                LocalDate.of(1978, 6, 6), 19);
         film.getLikes().add(445L);
         body = mapper.writeValueAsString(film);
         request = MockMvcRequestBuilders.post("/films")
@@ -363,7 +363,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(200, "200", "200",
-                LocalDate.of(1978, 6, 6), 19, 2);
+                LocalDate.of(1978, 6, 6), 19);
         film.getLikes().add(1L);
         film.getLikes().add(5L);
         body = mapper.writeValueAsString(film);
@@ -373,7 +373,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(400, "400", "400",
-                LocalDate.of(1978, 6, 6), 19, 4);
+                LocalDate.of(1978, 6, 6), 194);
         film.getLikes().add(1L);
         film.getLikes().add(5L);
         film.getLikes().add(52L);
@@ -385,7 +385,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(500, "500", "500",
-                LocalDate.of(1978, 6, 6), 19, 5);
+                LocalDate.of(1978, 6, 6), 195);
         film.getLikes().add(1L);
         film.getLikes().add(6L);
         film.getLikes().add(10L);
@@ -398,7 +398,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(600, "600", "600",
-                LocalDate.of(1978, 6, 6), 19, 6);
+                LocalDate.of(1978, 6, 6), 196);
         film.getLikes().add(1L);
         film.getLikes().add(6L);
         film.getLikes().add(10L);
@@ -412,7 +412,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(601, "601", "601",
-                LocalDate.of(1978, 6, 6), 19, 6);
+                LocalDate.of(1978, 6, 6), 196);
         film.getLikes().add(1L);
         film.getLikes().add(6L);
         film.getLikes().add(10L);
@@ -426,7 +426,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(602, "602", "602",
-                LocalDate.of(1978, 6, 6), 19, 6);
+                LocalDate.of(1978, 6, 6), 196);
         film.getLikes().add(1L);
         film.getLikes().add(6L);
         film.getLikes().add(10L);
@@ -440,7 +440,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(700, "700", "700",
-                LocalDate.of(1978, 6, 6), 19, 7);
+                LocalDate.of(1978, 6, 6), 197);
         film.getLikes().add(1L);
         film.getLikes().add(6L);
         film.getLikes().add(10L);
@@ -455,7 +455,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(800, "800", "800",
-                LocalDate.of(1978, 6, 6), 19, 8);
+                LocalDate.of(1978, 6, 6), 198);
         film.getLikes().add(1L);
         film.getLikes().add(6L);
         film.getLikes().add(10L);
@@ -471,7 +471,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(900, "900", "900",
-                LocalDate.of(1978, 6, 6), 19, 9);
+                LocalDate.of(1978, 6, 6), 199);
         film.getLikes().add(1L);
         film.getLikes().add(2L);
         film.getLikes().add(3L);
@@ -488,7 +488,7 @@ class FilmControllerTests {
         mockMvc.perform(request).andReturn();
 
         film = new Film(1000, "1000", "1000",
-                LocalDate.of(1978, 6, 6), 19, 10);
+                LocalDate.of(1978, 6, 6), 1910);
         film.getLikes().add(1L);
         film.getLikes().add(2L);
         film.getLikes().add(3L);

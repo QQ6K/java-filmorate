@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.interfaces.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.DbFilmStorage;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class FilmService {
     private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage) {
+    public FilmService(DbFilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
 

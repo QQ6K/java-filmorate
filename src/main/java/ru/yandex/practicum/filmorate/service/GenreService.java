@@ -23,7 +23,7 @@ public class GenreService {
         this.dbGenreStorage = dbGenreStorage;
     }
 
-    public Collection<Genre> findAll() {
+    public List<Genre> findAll() {
         return dbGenreStorage.findAll();
     }
 

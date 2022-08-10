@@ -39,14 +39,14 @@ public class DbGenreStorage implements GenreStorage {
         return genre;
     }
 
-    public Collection<Genre> findAll() {
+    public List<Genre> findAll() {
         String sql =
                 "SELECT * FROM genre_names";
         return
-                jdbcTemplate.query(sql, new ResultSetExtractor<Collection<Genre>>() {
+                jdbcTemplate.query(sql, new ResultSetExtractor<List<Genre>>() {
                     @Override
-                    public Collection<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        Collection<Genre> genres = new ArrayList<>();
+                    public List<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        List<Genre> genres = new ArrayList<>();
                         while (rs.next()) {
                             genres.add(mapToGenres(rs));
                         }
