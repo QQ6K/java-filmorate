@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -104,6 +105,20 @@ public class DbFilmStorage implements FilmStorage {
 
     @Override
     public List<Film> findPopular(int count) {
+        /*Validator.filmValidate(film);
+        //if (film.getId()==0) film.setId(getNextId());
+        log.info(String.valueOf("ok"));
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("FILMS")
+                .usingGeneratedKeyColumns("ID");
+        Map<String, Object> values = new HashMap<>();
+        values.put("NAME", film.getName());
+        values.put("DESCRIPTION", "film.getDescription()");
+        values.put("RELEASE_DATE", "2020-05-30");
+        values.put("DURATION", "150");
+        film.setId(simpleJdbcInsert.executeAndReturnKey(values).intValue());
+
+        return film;*/
         return null;
     }
 

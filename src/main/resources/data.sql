@@ -1,12 +1,12 @@
-INSERT INTO genre_names (id, name) VALUES(1, 'Детектив');
-INSERT INTO genre_names (id, name) VALUES(2, 'Комедия');
-INSERT INTO genre_names (id, name) VALUES(3, 'Ужасы');
-INSERT INTO genre_names (id, name) VALUES(4, 'Драма');
-INSERT INTO genre_names (id, name) VALUES(5, 'Мультфильм');
-INSERT INTO genre_names (id, name) VALUES(6, 'Триллер');
-INSERT INTO genre_names (id, name) VALUES(7, 'Документальный');
-INSERT INTO genre_names (id, name) VALUES(8, 'Боевик');
-INSERT INTO genre_names (id, name) VALUES(9, 'Вестерн');
+INSERT INTO genre_names (name) VALUES('Детектив');
+INSERT INTO genre_names (name) VALUES('Комедия');
+INSERT INTO genre_names (name) VALUES('Ужасы');
+INSERT INTO genre_names (name) VALUES('Драма');
+INSERT INTO genre_names (name) VALUES('Мультфильм');
+INSERT INTO genre_names (name) VALUES('Триллер');
+INSERT INTO genre_names (name) VALUES('Документальный');
+INSERT INTO genre_names (name) VALUES('Боевик');
+INSERT INTO genre_names (name) VALUES('Вестерн');
 
 INSERT INTO RATE_NAMES (name) VALUES('G');
 INSERT INTO RATE_NAMES (name) VALUES('PG');
