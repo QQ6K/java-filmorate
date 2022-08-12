@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static java.util.Collections.emptySet;
+
 
 @Data
 public class User {
@@ -28,7 +30,8 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
-        this.friends = new HashSet<>(Collections.emptySet());
+        HashSet friends = new HashSet<>(Collections.emptyList());
+        this.setFriends(friends);
     }
 
 

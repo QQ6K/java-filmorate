@@ -49,12 +49,12 @@ public class DbFilmStorage implements FilmStorage {
         }
 
         SqlRowSet genreRows = jdbcTemplate.queryForRowSet
-                ("SELECT fg.genre_id id, gn.name as name FROM film_genres fg " +
-                        "LEFT JOIN genre_names gn ON fg.genre_id = gn.id WHERE fg.film_id = ?", id);
-        System.out.println(genreRows.getRow());
+                ("SELECT fg.genre_id id, gn.name name FROM film_genres fg " +
+                        "LEFT JOIN genre_names gn ON fg.genre_id = gn.id " +
+                        "WHERE fg.film_id = ? ORDER BY genre_id ASC", id);
         Set<Genre> genres = new HashSet<>();
-        Genre genre = new Genre();
         while (genreRows.next()) {
+            Genre genre = new Genre();
             genre.setName(genreRows.getString("name"));
             genre.setId(Integer.parseInt(genreRows.getString("genre_id")));
             genres.add(genre);
@@ -165,7 +165,8 @@ public class DbFilmStorage implements FilmStorage {
     public List<Film> findPopular(int count) {
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet
                 ("select ID, count(USER_ID) as count FROM FILMS " +
-                        "left join LIKES L on FILMS.ID = L.FILM_ID group by id limit ?", count);
+                        "left join LIKES L on FILMS.ID = L.FILM_ID " +
+                        "group by id order by count desc limit ? ", count);
 
         List popularFilms = new ArrayList();
         Film film;
@@ -234,7 +235,7 @@ public class DbFilmStorage implements FilmStorage {
 
     public void addFilmGenres(Film film) {
         String sql = "INSERT INTO film_genres (film_id, genre_id) VALUES(?, ?)";
-        Set<Genre> genres = film.getGenres();
+        Collection<Genre> genres = film.getGenres();
         if (genres == null) {
             return;
         }
@@ -242,7 +243,6 @@ public class DbFilmStorage implements FilmStorage {
             jdbcTemplate.update(sql, film.getId(), genre.getId());
         }
     }
-
 
     @Override
     public void updateFilmGenres(Film film) {

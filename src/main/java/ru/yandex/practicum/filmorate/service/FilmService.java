@@ -74,7 +74,7 @@ public class FilmService {
 
     private void checkUser(Long userId){
         if (!filmStorage.checkUser(userId)) {
-            throw new NoFoundException("Отсутствует пользователь с id = " + userId);
+            throw new NoFoundException("Фильм: Отсутствует пользователь с id = " + userId);
         }
     }
 

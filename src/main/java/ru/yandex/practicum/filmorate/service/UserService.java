@@ -3,11 +3,10 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.interfaces.UserStorage;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.DbUserStorage;
 
 import java.util.ArrayList;
@@ -64,10 +63,10 @@ public class UserService {
 
         if (user.getFriends() == null) {
             userStorage.addFriend(id, friendId.intValue(), false);
-        }else  if (user.getFriends().contains(friendId)) {
+        } else if (user.getFriends().contains(friendId)) {
             throw new ValidationException("Существует друг с id = " + friendId);
         }
-        if (friend.getFriends()!=null) {
+        if (friend.getFriends() != null) {
             if (friend.getFriends().contains(id)) {
                 userStorage.addFriend(id, friendId.intValue(), true);
             } else userStorage.addFriend(id, friendId.intValue(), false);
@@ -82,12 +81,12 @@ public class UserService {
         User user = userStorage.getUser(id);
         User friend = userStorage.getUser(friendId.intValue());
 
-        if (user.getFriends()!=null){
-            userStorage.removeFromFriends(id,friendId.intValue());
+        if (user.getFriends() != null) {
+            userStorage.removeFromFriends(id, friendId.intValue());
         }
 
-        if (friend.getFriends()!=null && friend.getFriends().contains(id)) {
-           userStorage.addFriend(friendId.intValue(),id,false);
+        if (friend.getFriends() != null && friend.getFriends().contains(id)) {
+            userStorage.addFriend(friendId.intValue(), id, false);
         }
         return userStorage.getUser(id);
     }

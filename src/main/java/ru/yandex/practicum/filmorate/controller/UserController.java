@@ -29,7 +29,7 @@ public class UserController {
     public User create(@RequestBody User user) {
         log.info("Получен POST запрос на /users");
         Validator.userValidate(user);
-        userService.getUserStorage().create(user);
+        userService.create(user);
         return user;
     }
 

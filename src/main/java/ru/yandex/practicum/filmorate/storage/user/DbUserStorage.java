@@ -72,7 +72,7 @@ public class DbUserStorage implements UserStorage {
                 "(SELECT friend_id FROM friends  WHERE  user_id = ?) ";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
 
-        HashSet friends = new HashSet();
+        HashSet friends = new HashSet<>(Collections.emptyList());
         while (sqlRowSet.next()) {
             Long l = sqlRowSet.getLong("friend_id");
             friends.add(l);
