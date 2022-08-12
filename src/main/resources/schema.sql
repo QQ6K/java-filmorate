@@ -34,12 +34,12 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS friends
 (
-    user1_id integer NOT NULL,
-    user2_id integer NOT NULL,
+    user_id integer NOT NULL,
+    friend_id integer NOT NULL,
     status boolean NOT NULL,
-    CONSTRAINT pk_friends PRIMARY KEY (user1_id, user2_id),
-    CONSTRAINT fk_friends_user1_id FOREIGN KEY(user1_id) REFERENCES users (id),
-    CONSTRAINT fk_friends_user2_id FOREIGN KEY(user2_id) REFERENCES users (id)
+    CONSTRAINT pk_friends PRIMARY KEY (user_id, friend_id),
+    CONSTRAINT fk_friends_user_id FOREIGN KEY(user_id) REFERENCES users (id),
+    CONSTRAINT fk_friends_friend_id FOREIGN KEY(friend_id) REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS films

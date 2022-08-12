@@ -12,16 +12,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.interfaces.UserStorage;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Primary
 @Qualifier
@@ -35,11 +30,35 @@ public class DbUserStorage implements UserStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public boolean checkName(String name){
+        String sql =
+                "SELECT * FROM users WHERE name = ?";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, name);
+        if (sqlRowSet.next()) return true;
+        return false;
+    }
+
+    public boolean checkEmail(String email){
+        String sql =
+                "SELECT * FROM users WHERE email = ?";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, email);
+        if (sqlRowSet.next()) return true;
+        return false;
+    }
+
+    public boolean checkId(int id){
+        String sql =
+                "SELECT * FROM users WHERE id = ?";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
+        if (sqlRowSet.next()) return true;
+        return false;
+    }
+
     @Override
     public User getUser(int id) {
         User user = new User();
         SqlRowSet userRows = jdbcTemplate.queryForRowSet
-                ("SELECT * FROM users where ID= ?");
+                ("SELECT * FROM users where ID= ?", id);
         if (userRows.wasNull()) throw new NoFoundException("Отсутствует пользователь с указанным id = " + id);
         if (userRows.next()) {
             user.setId(Integer.parseInt(userRows.getString("id")));
@@ -48,6 +67,17 @@ public class DbUserStorage implements UserStorage {
             user.setName(userRows.getString("name"));
             user.setBirthday(userRows.getDate("birthday").toLocalDate());
         }
+
+        String sql =
+                "(SELECT friend_id FROM friends  WHERE  user_id = ?) ";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
+
+        HashSet friends = new HashSet();
+        while (sqlRowSet.next()) {
+            Long l = sqlRowSet.getLong("friend_id");
+            friends.add(l);
+        }
+        user.setFriends(friends);
         return user;
     }
 
@@ -57,14 +87,14 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<User> findAll() {
+    public List<User> findAll() {
         String sql =
                 "SELECT * FROM users";
         return
-                jdbcTemplate.query(sql, new ResultSetExtractor<Collection<User>>() {
+                jdbcTemplate.query(sql, new ResultSetExtractor<List<User>>() {
                     @Override
-                    public Collection<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        Collection<User> users = new ArrayList<>();
+                    public List<User> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        List<User> users = new ArrayList<>();
                         while(rs.next()){
                             users.add(MapUser(rs));
                         }
@@ -77,6 +107,9 @@ public class DbUserStorage implements UserStorage {
         User user = new User();
         user.setId(rs.getInt("id"));
         user.setName(rs.getString("name"));
+        user.setLogin(rs.getString("login"));
+        user.setEmail(rs.getString("email"));
+        user.setBirthday(rs.getDate("birthday").toLocalDate());
         return user;
     }
 
@@ -95,18 +128,24 @@ public class DbUserStorage implements UserStorage {
     }
 
     @Override
-    public User put(User user) {
+    public User update(User user) {
         String sql =
-                "UPDATE USERS SET EMAIL = ?, LOGIN = ?, NAME = ? , BIRTHDAY = ?" +
-                        "WHERE USER_ID = ?";
-        jdbcTemplate.update(sql, user.getLogin(), user.getEmail(), user.getName(), user.getBirthday(), user.getId());
+                "UPDATE users SET email = ?, login = ?, name = ? , birthday = ?" +
+                        "WHERE id = ?";
+        jdbcTemplate.update(sql, user.getEmail(), user.getLogin(), user.getName(), user.getBirthday(), user.getId());
         return user;
     }
 
-    public boolean containsEmail(String email) {
-        String sql = "SELECT * FROM user WHERE EMAIL = ?";
-        SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sql, email);
-        return filmRows.next();
+    @Override
+    public Set<Long> getFriends(int id) {
+        String sql =
+                "(SELECT friend_id ID FROM friend  WHERE  user1_id = ?) ";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, id);
+        Set<Long> friends = new HashSet<>();
+        while (sqlRowSet.next()) {
+            friends.add(sqlRowSet.getLong("id"));
+        }
+        return friends;
     }
 
    /* public void addFriend(int id, int friendId) {
@@ -125,28 +164,34 @@ public class DbUserStorage implements UserStorage {
     }*/
 
     public boolean containsFriendship(Long filterId1, Long filterId2, Boolean filterConfirmed) {
-        String sql = "SELECT * FROM friends WHERE user1_id = ? AND user2_id = ? AND  staatus = ?";
+        String sql = "SELECT * FROM friends WHERE user_id = ? AND friend_id = ? AND  staatus = ?";
         SqlRowSet rows = jdbcTemplate.queryForRowSet(sql, filterId1, filterId2, filterConfirmed);
         return rows.next();
     }
 
-    public void updateFriendship(Long id1, Long id2, boolean confirmed,  Long filterId1, Long filterId2) {
+    public void updateFriends(Long id1, Long id2, boolean confirmed,  Long filterId1, Long filterId2) {
         String sql =
-                "UPDATE friends SET user1_id = ?, user2_id = ?, status = ? " +
-                        "WHERE user1_id = ? AND user2_id = ?";
+                "UPDATE friends SET user_id = ?, friend_id = ?, status = ? " +
+                        "WHERE user_id = ? AND friend_id = ?";
         jdbcTemplate.update(sql, id1, id2, confirmed, filterId1, filterId2);
     }
 
-
-    public void insertFriendship(Long id, Long friendId) {
-        String sql = "INSERT INTO FRIENDSHIP (user1_id, user2_id, status) VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, id, friendId, false);
+    @Override
+    public void addFriend(int id, int friendId, boolean status) {
+        String sql = "INSERT INTO friends (user_id, friend_id, status) VALUES(?, ?, ?)";
+        jdbcTemplate.update(sql, id, friendId, status);
+        if (status) {
+            sql =
+                    "UPDATE friends SET status = ? " +
+                            "WHERE friend_id = ? AND user_id = ?";
+            jdbcTemplate.update(sql,  true, friendId, id);
+        }
     }
 
-
-    public void removeFriendship(Long filterId1, Long filterId2) {
-        String sql = "DELETE FROM FRIENDSHIP WHERE user2_id = ? AND user1_id = ?";
-        jdbcTemplate.update(sql, filterId1, filterId2);
+    @Override
+    public void removeFromFriends(int user_id, int friend_id) {
+        String sql = "DELETE FROM friends WHERE user_id = ? AND friend_id = ?";
+        jdbcTemplate.update(sql, user_id, friend_id);
     }
 
 

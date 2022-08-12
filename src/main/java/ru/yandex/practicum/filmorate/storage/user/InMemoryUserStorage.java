@@ -11,10 +11,11 @@ import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
-@Component
+
 @Slf4j
-public class InMemoryUserStorage implements UserStorage {
+public class InMemoryUserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
     private int globalId = 0;
 
@@ -47,6 +48,11 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+
+    public User update(User user) {
+        return null;
+    }
+
     public User put(User user) {
         if (users.containsKey(user.getEmail())) {
             throw new ValidationException("Пользователь с электронной почтой " +
@@ -60,6 +66,7 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+    
     public boolean userExist(int id) {
         return users.containsKey(id);
     }

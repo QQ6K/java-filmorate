@@ -36,9 +36,9 @@ public class MpaService {
 
     public Mpa getMpa(int id) {
         Mpa mpa = dbMpaStorage.getMpa(id);
-        if (mpa == null) {
+        if (mpa.getId() == 0 && mpa.getName() == null) {
             log.warn("Отсутствует рейтинг MPA с id=" + id);
-            throw new NoFoundException("не удалось найти MPA");
+            throw new NoFoundException("Не удалось найти MPA с id = " + id);
         }
         return mpa;
     }

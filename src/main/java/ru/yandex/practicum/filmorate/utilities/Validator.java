@@ -47,7 +47,10 @@ public class Validator {
             throw new ValidationException("Дата производства фильма до дня рождения кино!");
         }
         if (film.getDuration() <= 0) {
-            throw new ValidationException("Продолжительность фильма должна быть больше 0");
+            throw new ValidationException("Продолжительность фильма должна быть больше 0!");
+        }
+        if (film.getMpa() == null) {
+            throw new ValidationException("У фильма отсутсвует рейтинг!");
         }
     }
 }

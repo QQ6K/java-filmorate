@@ -1,5 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +23,13 @@ public class GenreController {
         this.genreService = genreService;
     }
 
-    @GetMapping("(/genres/{id}")
+    @GetMapping("/genres/{id}")
     public Genre findById(@PathVariable int id) {
         return genreService.findById(id);
     }
 
     @GetMapping("/genres")
-    public List<Genre> findAll() {
+    public Collection<Genre> findAll() {
         return genreService.findAll();
     }
 

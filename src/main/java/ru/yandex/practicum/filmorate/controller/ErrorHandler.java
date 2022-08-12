@@ -24,11 +24,11 @@ public class ErrorHandler {
     public void handleAlreadyExistException(AlreadyExistValidationException e) {
         log.info(e.getMessage());}
 
-  /*  @ExceptionHandler(NoFoundException.class)
+    @ExceptionHandler(NoFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleNoHandlerFound(NoFoundException e) {
         log.info(e.getMessage());
-    }*/
+    }
 
     /*@ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

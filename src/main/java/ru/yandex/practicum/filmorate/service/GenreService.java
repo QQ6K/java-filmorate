@@ -23,7 +23,7 @@ public class GenreService {
         this.dbGenreStorage = dbGenreStorage;
     }
 
-    public List<Genre> findAll() {
+    public Collection<Genre> findAll() {
         return dbGenreStorage.findAll();
     }
 
@@ -37,7 +37,7 @@ public class GenreService {
 
     public Genre findById(int id) {
         Genre genre = dbGenreStorage.getGenre(id);
-        if (genre == null) {
+        if (genre.getId() == 0 && genre.getName() == null) {
             log.warn("Отсутствует жанр с id=" + id);
             throw new NoFoundException("не удалось найти жанр");
         }

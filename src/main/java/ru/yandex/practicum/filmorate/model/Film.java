@@ -16,6 +16,7 @@ public class Film {
     private Set<Long> likes;
     private Mpa mpa;
     private Set<Genre> genres;
+    private int rate;
 
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration) {

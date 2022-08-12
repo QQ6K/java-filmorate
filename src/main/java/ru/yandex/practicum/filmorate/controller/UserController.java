@@ -22,7 +22,7 @@ public class UserController {
     @GetMapping("/users")
     public Collection<User> findAll() {
         log.debug("Получен GET запрос на /users");
-        return userService.getUserStorage().findAll();
+        return userService.findAll();
     }
 
     @PostMapping("/users")
@@ -34,10 +34,10 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public User put(@RequestBody User user) {
+    public User update(@RequestBody User user) {
         log.info("Получен PUT запрос на /users");
         Validator.userValidate(user);
-        userService.getUserStorage().put(user);
+        userService.update(user);
         return user;
     }
 
@@ -65,10 +65,10 @@ public class UserController {
         return userService.getUsersFriends(id);
     }
 
-    @GetMapping("/users/{id}/friends/common/{otherId}")
-    public ArrayList<User> getOtherUserFriends(@PathVariable int id, @PathVariable int otherId) {
-        log.info("Получен GET запрос на /users/"+id +"/friends/common/"+otherId);
-        return userService.getCommonFriends(id, otherId);
+    @GetMapping("/users/{id}/friends/common/{friendId}")
+    public ArrayList<User> getOtherUserFriends(@PathVariable int id, @PathVariable int friendId) {
+        log.info("Получен GET запрос на /users/"+id +"/friends/common/"+friendId);
+        return userService.getCommonFriends(id, friendId);
     }
 
 }
