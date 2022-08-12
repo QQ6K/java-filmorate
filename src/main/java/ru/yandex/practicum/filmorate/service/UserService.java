@@ -34,20 +34,16 @@ public class UserService {
 
     public User create(User user) {
         checkUserExist(user);
-        userStorage.create(user);
-        return user;
+        return userStorage.create(user);
     }
 
     public User update(User user) {
         checkUserId(user.getId());
-
-        userStorage.update(user);
-        return user;
+        return userStorage.update(user);
     }
 
     public List<User> findAll() {
-        List<User> users = userStorage.findAll();
-        return users;
+        return userStorage.findAll();
     }
 
     public List<User> getUsersFriends(int id) {
@@ -129,28 +125,6 @@ public class UserService {
     private void checkUserId(int id) {
         if (!userStorage.checkId(id)) {
             throw new NoFoundException("Отсутствует пользователь с id = " + id);
-        }
-    }
-
-    private void checkIdUser1(int id) {
-        if (!userStorage.getUsers().containsKey(id)) {
-            throw new NoFoundException("Отсутствует пользователь с id = " + id);
-        }
-    }
-
-    private void checkUserFriendIdAdd(int id, Long userId) {
-        if (!userStorage.getUsers().containsKey(id)) {
-            throw new NoFoundException("Отсутствует пользователь с id = " + id);
-        } else if (userStorage.getUsers().get(id).getFriends().contains(userId)) {
-            throw new AlreadyExistValidationException("В списке друзей уже есть пользователь с userId = " + id);
-        }
-    }
-
-    private void checkUserFriendIdDelete(int id, Long userId) {
-        if (!userStorage.getUsers().containsKey(id)) {
-            throw new NoFoundException("Отсутствует пользователь с id = " + id);
-        } else if (!userStorage.getUsers().get(id).getFriends().contains(userId)) {
-            throw new NoFoundException("В списке друзей нет пользователя с userId = " + id);
         }
     }
 

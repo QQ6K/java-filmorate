@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.interfaces.FilmStorage;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.DbFilmStorage;
 
 import java.util.List;
@@ -26,28 +27,23 @@ public class FilmService {
     }
 
     public Film createFilm(Film film){
-        filmStorage.create(film);
-        return film;
+        return filmStorage.create(film);
     }
 
     public Film getFilm(int id) {
-        if (filmStorage.checkId(id)) {
-            throw new ValidationException("Фильм существует");
-        }
+        checkId(id);
         return filmStorage.getFilm(id);
     }
 
     public Film updateFilm(Film film){
-        if (filmStorage.getFilm(film.getId())==null) {
-           throw new NoFoundException("Отсутсвует фильм с id = " + film.getId());
-        }
+        checkId(film.getId());
         if (!filmStorage.checkId(film.getId())) {
             throw new NoFoundException("Фильма не существует");
         }
         filmStorage.update(film);
         filmStorage.updateFilmMpa(film);
         filmStorage.updateFilmGenres(film);
-        return film;
+        return getFilm(film.getId());
     }
 
     public Film addLikeToFilm(int id, Long userId) {
@@ -57,9 +53,12 @@ public class FilmService {
     }
 
     public Film deleteLikeFromFilm(int id, Long userId) {
-        checkFilmUserIdForDelete(id, userId);
-        filmStorage.getFilm(id).getLikes().remove(userId);
-        return filmStorage.getFilms().get(id);
+        //checkFilmUserIdForDelete(id, userId);
+            checkId(id);
+            checkUser(userId);
+            checkLike(id, userId);
+            filmStorage.deleteLike(id, userId);
+            return getFilm(id);
     }
 
     public List<Film> getPopular(int count) {
@@ -67,25 +66,21 @@ public class FilmService {
         return filmStorage.findPopular(count);
     }
 
-    private void checkFilmId(int id) {
-        if (!filmStorage.getFilms().containsKey(id)) {
+    private void checkId(int id){
+        if (!filmStorage.checkId(id)) {
             throw new NoFoundException("Отсутствует фильм с id = " + id);
         }
     }
 
-    private void checkFilmUserIdForDelete(int id, Long userId) {
-        if (!filmStorage.getFilms().containsKey(id)) {
-            throw new NoFoundException("Отсутствует фильм с id = " + id);
-        } else if (!filmStorage.getFilms().get(id).getLikes().contains(userId)) {
-            throw new NoFoundException("Отсутствует лайк пользователя с userId = " + userId);
+    private void checkUser(Long userId){
+        if (!filmStorage.checkUser(userId)) {
+            throw new NoFoundException("Отсутствует пользователь с id = " + userId);
         }
     }
 
-    private void checkFilmUserIdForAdd(int id, Long userId) {
-        if (!filmStorage.getFilms().containsKey(id)) {
-            throw new NoFoundException("Отсутствует фильм с id = " + id);
-        } else if (filmStorage.getFilms().get(id).getLikes().contains(userId)) {
-            throw new AlreadyExistValidationException("Пользователь с userId = " + userId + " уже поставил лайк");
+    private void checkLike(int id, Long userId){
+        if (!filmStorage.checkLike(id,userId)) {
+            throw new NoFoundException("Отсутствует лайка!");
         }
     }
 

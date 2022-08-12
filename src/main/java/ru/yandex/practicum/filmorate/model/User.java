@@ -3,6 +3,8 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -26,7 +28,7 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
-        this.friends = new HashSet<>();
+        this.friends = new HashSet<>(Collections.emptySet());
     }
 
 

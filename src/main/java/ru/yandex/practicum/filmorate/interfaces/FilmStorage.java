@@ -30,4 +30,10 @@ public interface FilmStorage {
     void updateFilmGenres(Film film);
 
     boolean checkId(int id);
+
+    boolean checkUser(Long id);
+
+    boolean checkLike(int id, Long userId);
+
+    boolean deleteLike(int id, Long userId);
 }
