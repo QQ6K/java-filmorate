@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.yandex.practicum.filmorate.utilities.QueriesStaticStrings.getAllColumnsFromMpaNamesById;
+import static ru.yandex.practicum.filmorate.utilities.QueriesStaticStrings.updateNameMpaNamesById;
+
 @Slf4j
 @Component
 public class DbMpaStorage implements MpaStorage {
@@ -29,7 +32,7 @@ public class DbMpaStorage implements MpaStorage {
     public Mpa getMpa(int id) {
         Mpa mpa = new Mpa();
         SqlRowSet mpaRows = jdbcTemplate.queryForRowSet
-                ("SELECT * FROM mpa_names WHERE id= ?",id);
+                (getAllColumnsFromMpaNamesById, id);
         if (mpaRows.next()) {
             mpa.setId(Integer.parseInt(mpaRows.getString("id")));
             mpa.setName(mpaRows.getString("name"));
@@ -57,8 +60,7 @@ public class DbMpaStorage implements MpaStorage {
 
     @Override
     public Mpa update(Mpa mpa) {
-        String sql = "UPDATE mpa_names SET name = ? WHERE id = ?";
-        jdbcTemplate.update(sql, mpa.getName(), mpa.getId());
+        jdbcTemplate.update(updateNameMpaNamesById, mpa.getName(), mpa.getId());
         return mpa;
     }
 

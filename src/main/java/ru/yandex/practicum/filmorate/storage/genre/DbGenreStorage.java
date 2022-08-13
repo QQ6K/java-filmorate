@@ -17,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static ru.yandex.practicum.filmorate.utilities.QueriesStaticStrings.*;
+
 @Slf4j
 @Component
 public class DbGenreStorage implements GenreStorage {
@@ -31,7 +33,7 @@ public class DbGenreStorage implements GenreStorage {
     public Genre getGenre(int id) {
         Genre genre = new Genre();
         SqlRowSet genreRows = jdbcTemplate.queryForRowSet
-                ("SELECT * FROM genre_names where id= ?", id);
+                (getAllColumnsFromGenreNamesById, id);
         if (genreRows.next()) {
             genre.setId(Integer.parseInt(genreRows.getString("id")));
             genre.setName(genreRows.getString("name"));
@@ -40,10 +42,8 @@ public class DbGenreStorage implements GenreStorage {
     }
 
     public Collection<Genre> findAll() {
-        String sql =
-                "SELECT * FROM genre_names ORDER BY id ASC";
         return
-                jdbcTemplate.query(sql, new ResultSetExtractor<Collection<Genre>>() {
+                jdbcTemplate.query(getAllGenresFromGenresNameById, new ResultSetExtractor<Collection<Genre>>() {
                     @Override
                     public Collection<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
                         List<Genre> genres = new ArrayList<>();
@@ -66,8 +66,7 @@ public class DbGenreStorage implements GenreStorage {
     }
 
     public Genre update(Genre genre) {
-        String sql = "UPDATE genre_names SET name = ? WHERE id = ?";
-        jdbcTemplate.update(sql, genre.getName(), genre.getId());
+        jdbcTemplate.update(updateGenreName, genre.getName(), genre.getId());
         return genre;
     }
 

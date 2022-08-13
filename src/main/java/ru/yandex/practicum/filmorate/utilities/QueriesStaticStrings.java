@@ -67,5 +67,15 @@ public class QueriesStaticStrings {
     public static String checkUserEmailExist =
             "SELECT * FROM users WHERE email = ?";
 
+    public static String getAllColumnsFromGenreNamesById = "SELECT * FROM genre_names where id= ?";
+
+    public static String updateGenreName = "UPDATE genre_names SET name = ? WHERE id = ?";
+
+    public static String getAllGenresFromGenresNameById = "SELECT * FROM genre_names ORDER BY id ASC";
+
+    public static String getAllColumnsFromMpaNamesById = "SELECT * FROM mpa_names WHERE id= ?";
+
+    public static String updateNameMpaNamesById = "UPDATE mpa_names SET name = ? WHERE id = ?";
+
 
 }

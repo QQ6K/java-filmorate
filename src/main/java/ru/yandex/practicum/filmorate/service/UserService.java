@@ -22,10 +22,6 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public UserStorage getUserStorage() {
-        return userStorage;
-    }
-
     public User getUser(int id) {
         checkUserId(id);
         return userStorage.getUser(id);
