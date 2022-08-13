@@ -13,8 +13,6 @@ import java.util.Set;
 public interface FilmStorage {
     Film getFilm(int id);
 
-    Map<Integer, Film> getFilms();
-
     Collection<Film> findAll();
 
     Film create(Film film);
