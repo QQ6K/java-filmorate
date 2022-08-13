@@ -6,12 +6,10 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
 import ru.yandex.practicum.filmorate.interfaces.GenreStorage;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.genre.DbGenreStorage;
-import ru.yandex.practicum.filmorate.storage.mpa.DbMpaStorage;
 
 import java.util.Collection;
-import java.util.List;
+
 @Slf4j
 @Service
 public class GenreService {

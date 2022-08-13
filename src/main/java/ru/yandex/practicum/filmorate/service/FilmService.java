@@ -2,12 +2,9 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.AlreadyExistValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.interfaces.FilmStorage;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.DbFilmStorage;
 
 import java.util.List;
@@ -26,7 +23,7 @@ public class FilmService {
         return filmStorage;
     }
 
-    public Film createFilm(Film film){
+    public Film createFilm(Film film) {
         return filmStorage.create(film);
     }
 
@@ -35,7 +32,7 @@ public class FilmService {
         return filmStorage.getFilm(id);
     }
 
-    public Film updateFilm(Film film){
+    public Film updateFilm(Film film) {
         checkId(film.getId());
         if (!filmStorage.checkId(film.getId())) {
             throw new NoFoundException("Фильма не существует");
@@ -53,33 +50,32 @@ public class FilmService {
     }
 
     public Film deleteLikeFromFilm(int id, Long userId) {
-        //checkFilmUserIdForDelete(id, userId);
-            checkId(id);
-            checkUser(userId);
-            checkLike(id, userId);
-            filmStorage.deleteLike(id, userId);
-            return getFilm(id);
+        checkId(id);
+        checkUser(userId);
+        checkLike(id, userId);
+        filmStorage.deleteLike(id, userId);
+        return getFilm(id);
     }
 
     public List<Film> getPopular(int count) {
-        if (count<=0) throw new  NoFoundException("Количество фильмов в выборке меньше или равно нулю");
+        if (count <= 0) throw new NoFoundException("Количество фильмов в выборке меньше или равно нулю");
         return filmStorage.findPopular(count);
     }
 
-    private void checkId(int id){
+    private void checkId(int id) {
         if (!filmStorage.checkId(id)) {
             throw new NoFoundException("Отсутствует фильм с id = " + id);
         }
     }
 
-    private void checkUser(Long userId){
+    private void checkUser(Long userId) {
         if (!filmStorage.checkUser(userId)) {
             throw new NoFoundException("Фильм: Отсутствует пользователь с id = " + userId);
         }
     }
 
-    private void checkLike(int id, Long userId){
-        if (!filmStorage.checkLike(id,userId)) {
+    private void checkLike(int id, Long userId) {
+        if (!filmStorage.checkLike(id, userId)) {
             throw new NoFoundException("Отсутствует лайка!");
         }
     }

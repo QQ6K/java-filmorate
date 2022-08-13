@@ -2,16 +2,13 @@ package ru.yandex.practicum.filmorate.storage.genre;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.interfaces.GenreStorage;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,15 +40,13 @@ public class DbGenreStorage implements GenreStorage {
 
     public Collection<Genre> findAll() {
         return
-                jdbcTemplate.query(getAllGenresFromGenresNameById, new ResultSetExtractor<Collection<Genre>>() {
-                    @Override
-                    public Collection<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        List<Genre> genres = new ArrayList<>();
-                        while (rs.next()) {
-                            genres.add(mapToGenres(rs));
-                        }
-                        return genres;
+                jdbcTemplate.query(getAllGenresFromGenresNameById, (
+                        ResultSetExtractor<Collection<Genre>>) rs -> {
+                    List<Genre> genres = new ArrayList<>();
+                    while (rs.next()) {
+                        genres.add(mapToGenres(rs));
                     }
+                    return genres;
                 });
     }
 

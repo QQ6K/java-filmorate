@@ -39,7 +39,7 @@ public class DbFilmStorage implements FilmStorage {
         Film film = jdbcTemplate.query(getAllColumnsFilmsById, this::mapToFilm, id).get(0);
         film.setGenres(new HashSet<>(jdbcTemplate.query(getAllFilmGenresById, this::mapToGenre, id)));
         film.setMpa(jdbcTemplate.query(getFilmMpaById, this::mapToMpa, id).get(0));
-        film.setLikes(new HashSet(jdbcTemplate.query(getUserIdFromFilmLikesByFilmId, this::mapToLike, id)));
+        film.setLikes(new HashSet<>(jdbcTemplate.query(getUserIdFromFilmLikesByFilmId, this::mapToLike, id)));
         return film;
     }
 
@@ -76,8 +76,8 @@ public class DbFilmStorage implements FilmStorage {
                 values.put("genre_id", genre.getId());
                 simpleJdbcInsert.execute(values);
             }
-            values.clear();
         }
+        values.clear();
 
         if (film.getMpa() != null) {
             simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
@@ -87,7 +87,6 @@ public class DbFilmStorage implements FilmStorage {
             values.put("film_id", film.getId());
             simpleJdbcInsert.execute(values);
         }
-
         return getFilm(film.getId());
     }
 
@@ -154,22 +153,19 @@ public class DbFilmStorage implements FilmStorage {
     @Override
     public boolean checkId(int id) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(getAllColumnsFilmsById, id);
-        if (sqlRowSet.next()) return true;
-        return false;
+        return sqlRowSet.next();
     }
 
     @Override
     public boolean checkUser(Long id) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(getAllColumnsUserById, id);
-        if (sqlRowSet.next()) return true;
-        return false;
+        return sqlRowSet.next();
     }
 
     @Override
     public boolean checkLike(int id, Long userId) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(getUserLikeToFilmFromLikes, id, userId);
-        if (sqlRowSet.next()) return true;
-        return false;
+        return sqlRowSet.next();
     }
 
     @Override

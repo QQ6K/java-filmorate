@@ -4,14 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.interfaces.UserStorage;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.ResultSet;
@@ -35,7 +32,7 @@ public class DbUserStorage implements UserStorage {
     @Override
     public User getUser(int id) {
         User user = jdbcTemplate.query(getGetAllColumnsUserById, this::mapToUser, id).get(0);
-        HashSet friends = new HashSet(jdbcTemplate.query(getUserFriends,this::mapToFriends,id));
+        HashSet friends = new HashSet(jdbcTemplate.query(getUserFriends, this::mapToFriends, id));
         user.setFriends(friends);
         return user;
     }
@@ -59,7 +56,7 @@ public class DbUserStorage implements UserStorage {
         values.put("name", user.getName());
         values.put("email", user.getEmail());
         values.put("login", user.getLogin());
-        values.put("birthday",user.getBirthday());
+        values.put("birthday", user.getBirthday());
         user.setId(simpleJdbcInsert.executeAndReturnKey(values).intValue());
         return user;
     }
@@ -86,7 +83,7 @@ public class DbUserStorage implements UserStorage {
         return rows.next();
     }
 
-    public void updateFriends(Long id1, Long id2, boolean confirmed,  Long filterId1, Long filterId2) {
+    public void updateFriends(Long id1, Long id2, boolean confirmed, Long filterId1, Long filterId2) {
         jdbcTemplate.update(updateFriendship, id1, id2, confirmed, filterId1, filterId2);
     }
 
@@ -94,7 +91,7 @@ public class DbUserStorage implements UserStorage {
     public void addFriend(int id, int friendId, boolean status) {
         jdbcTemplate.update(insertFriend, id, friendId, status);
         if (status) {
-            jdbcTemplate.update(updateFriend,  true);
+            jdbcTemplate.update(updateFriend, true);
         }
     }
 
@@ -103,22 +100,20 @@ public class DbUserStorage implements UserStorage {
         jdbcTemplate.update(deleteFriend, user_id, friend_id);
     }
 
-    public boolean checkName(String name){
+    public boolean checkName(String name) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(checkUserNameExist, name);
         if (sqlRowSet.next()) return true;
         return false;
     }
 
-    public boolean checkEmail(String email){
+    public boolean checkEmail(String email) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(checkUserEmailExist, email);
-        if (sqlRowSet.next()) return true;
-        return false;
+        return sqlRowSet.next();
     }
 
-    public boolean checkId(int id){
+    public boolean checkId(int id) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(getAllColumnsUserById, id);
-        if (sqlRowSet.next()) return true;
-        return false;
+        return sqlRowSet.next();
     }
 
     private User mapToUser(ResultSet resultSet, int id) throws SQLException {
