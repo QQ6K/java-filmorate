@@ -32,7 +32,7 @@ public class DbUserStorage implements UserStorage {
     @Override
     public User getUser(int id) {
         User user = jdbcTemplate.query(getGetAllColumnsUserById, this::mapToUser, id).get(0);
-        HashSet friends = new HashSet(jdbcTemplate.query(getUserFriends, this::mapToFriends, id));
+        HashSet<Long> friends = new HashSet<>(jdbcTemplate.query(getUserFriends, this::mapToFriends, id));
         user.setFriends(friends);
         return user;
     }
@@ -78,15 +78,6 @@ public class DbUserStorage implements UserStorage {
         return friends;
     }
 
-    public boolean containsFriendship(Long filterId1, Long filterId2, Boolean filterConfirmed) {
-        SqlRowSet rows = jdbcTemplate.queryForRowSet(checkFriendship, filterId1, filterId2, filterConfirmed);
-        return rows.next();
-    }
-
-    public void updateFriends(Long id1, Long id2, boolean confirmed, Long filterId1, Long filterId2) {
-        jdbcTemplate.update(updateFriendship, id1, id2, confirmed, filterId1, filterId2);
-    }
-
     @Override
     public void addFriend(int id, int friendId, boolean status) {
         jdbcTemplate.update(insertFriend, id, friendId, status);
@@ -102,8 +93,7 @@ public class DbUserStorage implements UserStorage {
 
     public boolean checkName(String name) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(checkUserNameExist, name);
-        if (sqlRowSet.next()) return true;
-        return false;
+        return sqlRowSet.next();
     }
 
     public boolean checkEmail(String email) {

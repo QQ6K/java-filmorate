@@ -117,13 +117,6 @@ public class DbFilmStorage implements FilmStorage {
         jdbcTemplate.update(insertNewLike, film_id, user_id);
     }
 
-    public void getLikes(Film film) {
-        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(getUserIdFromFilmLikesByFilmId, film.getId());
-        while (sqlRowSet.next()) {
-            film.getLikes().add(sqlRowSet.getLong("user_id"));
-        }
-    }
-
     public void addFilmGenres(Film film) {
         Collection<Genre> genres = film.getGenres();
         if (genres == null) {

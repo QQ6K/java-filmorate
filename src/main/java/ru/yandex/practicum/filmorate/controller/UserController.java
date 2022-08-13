@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/friends")
-    public List getAllFriends(@PathVariable int id) {
+    public List<User> getAllFriends(@PathVariable int id) {
         log.info("Получен GET запрос на /users/" + id + "/friends");
         return userService.getUsersFriends(id);
     }
