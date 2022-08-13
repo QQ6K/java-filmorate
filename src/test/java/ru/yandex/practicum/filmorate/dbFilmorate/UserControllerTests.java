@@ -67,6 +67,7 @@ public class UserControllerTests {
     }
 
     @Test
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     public void testFindAll() throws JsonProcessingException {
         String json = "{\"name\":\"UPDATE\",\"releaseDate\":\"1979-04-17\"," +
                 "\"description\":\"Duisinconsequatesse\",\"duration\":100," +

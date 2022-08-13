@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
@@ -34,44 +35,41 @@ public class MpaControllerTests {
 
 
     @Test
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     public void testCreateMpa() throws JsonProcessingException {
-        String json = "\"{\"name\":\"NO-50\"}\"";
+        String json = "{\"name\":\"NO-50\"}";
         Mpa mpa = mapper.readValue(json, Mpa.class);
-        assertThat(mpaStorage.create(mpa)).hasFieldOrPropertyWithValue("id", 6);
+        Mpa out = mpaStorage.create(mpa);
+        assertThat(out).hasFieldOrPropertyWithValue("id", 6);
+        System.out.println(mapper.writeValueAsString(out));
     }
 
     @Test
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     public void testGetGenre() throws JsonProcessingException {
         testCreateMpa();
-        assertThat(mpaStorage.getMpa(6)).hasFieldOrPropertyWithValue("id", 6);
-        System.out.println(mapper.writeValueAsString(mpaStorage.getMpa(7)));
+        Mpa out = mpaStorage.getMpa(6);
+        assertThat(out).hasFieldOrPropertyWithValue("id", 6);
+        System.out.println("Вернулось:" + mapper.writeValueAsString(out));
     }
 
     @Test
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     public void testGetAllGenres() throws JsonProcessingException {
         Collection<Mpa> mpas = mpaStorage.findAll();
-        String json = "[{\"id\":1,\"name\":\"Комедия\"}," +
-                "{\"id\":2,\"name\":\"Драма\"}," +
-                "{\"id\":3,\"name\":\"Мультфильм\"}," +
-                "{\"id\":4,\"name\":\"Триллер\"}," +
-                "{\"id\":5,\"name\":\"Документальный\"}," +
-                "{\"id\":6,\"name\":\"Боевик\"}]";
+        String json = "[{\"id\":1,\"name\":\"G\"}," +
+                "{\"id\":5,\"name\":\"NC-17\"}," +
+                "{\"id\":2,\"name\":\"PG\"}," +
+                "{\"id\":3,\"name\":\"PG-13\"}," +
+                "{\"id\":4,\"name\":\"R\"}]";
         assertEquals(mapper.writeValueAsString(mpas),json, "Не совпадают жанры с исходными");
         System.out.println(mapper.writeValueAsString(mpas));
     }
 
     @Test
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    public void testUpdateGenre() throws JsonProcessingException {
+    public void testUpdateMpa() throws JsonProcessingException {
         testCreateMpa();
-        System.out.println(mapper.writeValueAsString(mpaStorage.getMpa(7)));
-        String json = "{\"id\":7,\"name\":\"Трагикомедия\"}";
+        String json = "{\"id\":6,\"name\":\"YES50\"}";
         Mpa mpa = mapper.readValue(json, Mpa.class);
         mpaStorage.update(mpa);
-        assertThat(mpaStorage.getMpa(7)).hasFieldOrPropertyWithValue("name", "Трагикомедия");
-        System.out.println(mapper.writeValueAsString(mpaStorage.getMpa(7)));
+        assertThat(mpaStorage.getMpa(6)).hasFieldOrPropertyWithValue("name", "YES50");
+        System.out.println(mapper.writeValueAsString(mpaStorage.getMpa(6)));
     }
 }
