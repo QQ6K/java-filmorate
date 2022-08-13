@@ -39,4 +39,33 @@ public class QueriesStaticStrings {
     public static String getAllColumnsUserById = "SELECT * FROM users WHERE id = ?";
 
     public static String deleteLike = "DELETE FROM likes WHERE (film_id = ? AND user_id=?)";
+
+    public static String getGetAllColumnsUserById = "SELECT * FROM users where ID= ?";
+
+    public static String getUserFriends = "SELECT friend_id FROM friends  WHERE  user_id = ?";
+
+    public static String getUserIds = "SELECT id FROM users";
+
+    public static String updateUserInfo = "UPDATE users SET email = ?, login = ?, name = ? , birthday = ?" +
+            "WHERE id = ?";
+
+    public static String checkFriendship = "SELECT * FROM friends WHERE user_id = ? AND friend_id = ? AND  status = ?";
+
+    public static String updateFriendship = "UPDATE friends SET status = ? " +
+            "WHERE user_id = ? AND friend_id = ?";
+
+    public static String insertFriend = "INSERT INTO friends (user_id, friend_id, status) VALUES(?, ?, ?)";
+
+    public static String updateFriend = "UPDATE friends SET status = ? " +
+            "WHERE friend_id = ? AND user_id = ?";
+
+    public static String deleteFriend = "DELETE FROM friends WHERE user_id = ? AND friend_id = ?";
+
+    public static String checkUserNameExist =
+            "SELECT * FROM users WHERE name = ?";
+
+    public static String checkUserEmailExist =
+            "SELECT * FROM users WHERE email = ?";
+
+
 }

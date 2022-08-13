@@ -11,8 +11,6 @@ public interface UserStorage {
 
     User getUser(int id);
 
-    HashMap<Integer, User> getUsers();
-
     List<User> findAll();
 
     User create(User user);

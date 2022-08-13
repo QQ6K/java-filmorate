@@ -146,7 +146,6 @@ public class DbFilmStorage implements FilmStorage {
         jdbcTemplate.update(insertFilmMpa, film.getId(), mpa.getId());
     }
 
-    @Override
     public void updateFilmMpa(Film film) {
         jdbcTemplate.update(deleteFilmFromFilmMpa, film.getId());
         addFilmMpa(film);

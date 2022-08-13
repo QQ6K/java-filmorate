@@ -91,15 +91,6 @@ public class UserService {
         return userStorage.getUser(id);
     }
 
-    public List<User> getAllFriends(int id) {
-        List friends = new ArrayList<>();
-        checkUserId(id);
-        for (long i : userStorage.getUsers().get(id).getFriends()) {
-            friends.add(userStorage.getUsers().get(id));
-        }
-        return friends;
-    }
-
     public ArrayList<User> getCommonFriends(int id, int friendId) {
         ArrayList<User> commonFriends = new ArrayList<>();
         checkUserId(id);
