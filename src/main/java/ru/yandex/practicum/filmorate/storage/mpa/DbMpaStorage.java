@@ -44,7 +44,7 @@ public class DbMpaStorage implements MpaStorage {
     @Override
     public List<Mpa> findAll() {
         String sql = "SELECT * FROM mpa_names";
-        return jdbcTemplate.query(sql, this::mapToRating);
+        return jdbcTemplate.query(sql, this::mapToMpa);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DbMpaStorage implements MpaStorage {
         return mpa;
     }
 
-    private Mpa mapToRating(ResultSet resultSet, int rowNum) throws SQLException {
+    private Mpa mapToMpa(ResultSet resultSet, int rowNum) throws SQLException {
         Mpa mpa = new Mpa();
         mpa.setId(resultSet.getInt("id"));
         mpa.setName(resultSet.getString("name"));
