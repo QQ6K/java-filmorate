@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.utilities.Validator;
 import java.util.*;
 
 @Slf4j
-public class InMemoryFilmStorage {
+public class InMemoryFilmStorage implements FilmStorage {
    private final Map<Integer, Film> films = new HashMap<>();
     private int globalId = 0;
 
@@ -65,6 +65,41 @@ public class InMemoryFilmStorage {
                 return filmsSort.subList(0, count);
             } else return filmsSort;
         } else return filmsSort;
+    }
+
+    @Override
+    public void updateFilmMpa(Film film) {
+
+    }
+
+    @Override
+    public void addLikes(int film_id, Long user_id) {
+
+    }
+
+    @Override
+    public void updateFilmGenres(Film film) {
+
+    }
+
+    @Override
+    public boolean checkId(int id) {
+        return false;
+    }
+
+    @Override
+    public boolean checkUser(Long id) {
+        return false;
+    }
+
+    @Override
+    public boolean checkLike(int id, Long userId) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteLike(int id, Long userId) {
+        return false;
     }
 
 }

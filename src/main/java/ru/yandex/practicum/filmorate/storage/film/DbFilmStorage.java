@@ -44,9 +44,9 @@ public class DbFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Collection<Film> findAll() {
+    public List<Film> findAll() {
         List<Integer> filmIds = jdbcTemplate.query(getFilmIds, this::mapId);
-        Collection<Film> films = new ArrayList<>(Collections.emptySet());
+        List<Film> films = new ArrayList<>(Collections.emptySet());
         for (Integer id : filmIds) {
             films.add(getFilm(id));
         }

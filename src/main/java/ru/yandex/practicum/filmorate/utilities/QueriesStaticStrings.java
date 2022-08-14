@@ -44,15 +44,10 @@ public class QueriesStaticStrings {
 
     public static String getUserFriends = "SELECT friend_id FROM friends  WHERE  user_id = ?";
 
-    public static String getUserIds = "SELECT id FROM users";
+    public static String getUserIdsAsc = "SELECT id FROM users ORDER BY id ASC";
 
     public static String updateUserInfo = "UPDATE users SET email = ?, login = ?, name = ? , birthday = ?" +
             "WHERE id = ?";
-
-    public static String checkFriendship = "SELECT * FROM friends WHERE user_id = ? AND friend_id = ? AND  status = ?";
-
-    public static String updateFriendship = "UPDATE friends SET status = ? " +
-            "WHERE user_id = ? AND friend_id = ?";
 
     public static String insertFriend = "INSERT INTO friends (user_id, friend_id, status) VALUES(?, ?, ?)";
 

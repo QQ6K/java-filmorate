@@ -6,15 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.film.DbFilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.DbUserStorage;
 
 import java.util.ArrayList;
@@ -69,35 +66,38 @@ public class UserControllerTests {
     @Test
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     public void testFindAll() throws JsonProcessingException {
-        String json = "{\"name\":\"UPDATE\",\"releaseDate\":\"1979-04-17\"," +
-                "\"description\":\"Duisinconsequatesse\",\"duration\":100," +
-                "\"rate\":4,\"mpa\":{\"id\":1}}";
+        String json = "{\"email\":\"111fr24iend@mail.ru\"," +
+                "\"login\":\"user1\",\"name\":\"1111asdad\"," +
+                "\"birthday\":\"1976-08-20\",\"friends\":[]}";
         User user1 = mapper.readValue(json, User.class);
+        User user10 = mapper.readValue(json, User.class);
 
-        json = "{\"name\":\"UPDATE\",\"releaseDate\":\"1979-04-17\"," +
-                "\"description\":\"Duisinconsequatesse\",\"duration\":100," +
-                "\"rate\":4,\"mpa\":{\"id\":1}}";
+        json = "{\"email\":\"222fr234234iend@mail.ru\"," +
+                "\"login\":\"user2\",\"name\":\"22222asd\"," +
+                "\"birthday\":\"1976-08-20\",\"friends\":[]}";
         User user2 = mapper.readValue(json, User.class);
+        User user20 = mapper.readValue(json, User.class);
 
-        json = "{\"name\":\"UPDATE\",\"releaseDate\":\"1979-04-17\"," +
-                "\"description\":\"Duisinconsequatesse\",\"duration\":100," +
-                "\"rate\":4,\"mpa\":{\"id\":1}}";
+        json = "{\"email\":\"333fr2342nd@mail.ru\"," +
+                "\"login\":\"user3\",\"name\":\"3333asda\"," +
+                "\"birthday\":\"1976-08-20\",\"friends\":[]}";
         User user3 = mapper.readValue(json, User.class);
+        User user30 = mapper.readValue(json, User.class);
 
         userStorage.create(user1);
         userStorage.create(user2);
         userStorage.create(user3);
-        user1.setId(1);
-        user2.setId(2);
-        user3.setId(3);
+        user10.setId(1);
+        user20.setId(2);
+        user30.setId(3);
         List<User> usersStart = new ArrayList<>();
-        List<User> usersFin = new ArrayList<>();
-        usersStart.add(user1);
-        usersStart.add(user2);
-        usersStart.add(user3);
-        usersFin = (List<User>) userStorage.findAll();
+        List<User> usersFin;
+        usersStart.add(user10);
+        usersStart.add(user20);
+        usersStart.add(user30);
+        usersFin = userStorage.findAll();
         assertEquals(usersFin.size(), 3, "Размер выборки отличается");
-        assertEquals(usersFin, usersStart, "Cостав выборки отличается");
+        assertEquals(usersStart, usersFin, "Cостав выборки отличается");
         System.out.println(usersStart);
         System.out.println(usersFin);
     }

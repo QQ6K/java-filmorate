@@ -39,7 +39,7 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public List<User> findAll() {
-        List<Integer> userIds = jdbcTemplate.query(getUserIds, this::mapId);
+        List<Integer> userIds = jdbcTemplate.query(getUserIdsAsc, this::mapId);
         List<User> users = new ArrayList<>(Collections.emptySet());
         for (Integer id : userIds) {
             users.add(getUser(id));
