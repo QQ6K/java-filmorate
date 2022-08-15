@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+*.mv.db
+*.trace.db
+/db/filmorate.mv.db
+/db/filmorate.trace.db

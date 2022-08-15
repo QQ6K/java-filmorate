@@ -1,12 +1,10 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.NoHandlerFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,20 +27,20 @@ public class FilmController {
     @PostMapping("/films")
     public Film create(@RequestBody Film film) {
         log.info("Получен POST запрос на /films");
-        filmService.getFilmStorage().create(film);
-        return film;
+        Validator.filmValidate(film);
+        return filmService.createFilm(film);
     }
 
     @PutMapping("/films")
-    public Film put(@RequestBody Film film) {
+    public Film update(@RequestBody Film film) {
         log.info("Получен PUT запрос на /films");
-        filmService.getFilmStorage().put(film);
-        return film;
+        Validator.filmValidate(film);
+        return filmService.updateFilm(film);
     }
 
     @GetMapping("/films/{id}")
     public Film getFilm(@PathVariable int id) {
-        log.info("Получен GET запрос на /films/"+id);
+        log.info("Получен GET запрос на /films/" + id);
         return filmService.getFilm(id);
     }
 
@@ -54,17 +52,15 @@ public class FilmController {
 
     @DeleteMapping("/films/{id}/like/{userId}")
     public Film deleteLike(@PathVariable int id, @PathVariable Long userId) {
-        log.info("Получен DELETE запрос на /films/"+id +"/like/"+userId.intValue());
+        log.info("Получен DELETE запрос на /films/" + id + "/like/" + userId.intValue());
         return filmService.deleteLikeFromFilm(id, userId);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
     public Film addLikeToFilm(@PathVariable int id, @PathVariable Long userId) {
-        log.info("Получен PUT запрос на /films/"+id +"/like/"+userId.intValue());
+        log.info("Получен PUT запрос на /films/" + id + "/like/" + userId.intValue());
         return filmService.addLikeToFilm(id, userId);
     }
-
-
 
 
 }

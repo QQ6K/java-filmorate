@@ -2,17 +2,16 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.NoFoundException;
+import ru.yandex.practicum.filmorate.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.utilities.Validator;
 
 import java.util.*;
 
 @Slf4j
-@Component
 public class InMemoryFilmStorage implements FilmStorage {
-    private final Map<Integer, Film> films = new HashMap<>();
+   private final Map<Integer, Film> films = new HashMap<>();
     private int globalId = 0;
 
     @Autowired
@@ -41,6 +40,11 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
+
+    public Film update(Film film) {
+        return null;
+    }
+
     public Film put(Film film) {
         if (films.containsKey(film.getId())) {
             Validator.filmValidate(film);
@@ -61,6 +65,41 @@ public class InMemoryFilmStorage implements FilmStorage {
                 return filmsSort.subList(0, count);
             } else return filmsSort;
         } else return filmsSort;
+    }
+
+    @Override
+    public void updateFilmMpa(Film film) {
+
+    }
+
+    @Override
+    public void addLikes(int film_id, Long user_id) {
+
+    }
+
+    @Override
+    public void updateFilmGenres(Film film) {
+
+    }
+
+    @Override
+    public boolean checkId(int id) {
+        return false;
+    }
+
+    @Override
+    public boolean checkUser(Long id) {
+        return false;
+    }
+
+    @Override
+    public boolean checkLike(int id, Long userId) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteLike(int id, Long userId) {
+        return false;
     }
 
 }

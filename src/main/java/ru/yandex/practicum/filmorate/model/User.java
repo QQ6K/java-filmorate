@@ -1,17 +1,28 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 
 
 @Data
+@NoArgsConstructor
 public class User {
     private int id;
-    private final String email;
+    private String email;
     private String login;
     private String name;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthday;
     private HashSet<Long> friends;
 
@@ -21,8 +32,10 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
-        this.friends = new HashSet();
+        HashSet friends = new HashSet<>(Collections.emptyList());
+        this.setFriends(friends);
     }
+
 
 
 }
